@@ -1,0 +1,133 @@
+
+ericb 2018 July 9th
+
+Created gitlab repository
+
+Version 1.7
+
+ericb 2017 September 10th 
+
+Created github repository
+
+ericb 2017 June 25th
+
+Added -fno-builtin-memset gcc option, to protect memset use (there is no memset_s() yet on Linux))
+Removed strcpy, replaced by strlcpy (from OpenBSD)
+
+Version 1.6
+
+ericb 2017 March 12th
+Removed QA stuff. Keep only bAsk in the prototypes
+
+ericb 2016 May 26th
+Fixed some typos in the documentation
+
+ericb 2016 May 25th
+Code cleanup, and some cosmetics
+
+Version 1.5
+
+ericb 2016 May 24th
+Documentation update
+Added a protection when min > max in saisie_nombre* calls
+To help tracking buffer overflows, the optimization level is now 3 ( -O3 )
+Improved QA tests list
+Splitted saisie_nombre.c into saisie_nombre_entier.c + saisie_nombre_reel.c
+Replaced initialize_gbuf() with initialize_string() + use of memset instead of nulling an array (slower)
+Hit several buffer overflows (size of strings need some rework)
+Simplified saisie_nombre, using initialize_string systematicaly
+Added limits in the while loop, to securize calcule_signe
+Limited all loops to the real string size (before was MAX_BUFFER_SIZE, less efficient)
+
+Version 1.4
+
+ericb 2016 May 11th
+Added initialize_g_buf() to clean the global buffer every time, AND transparently (no need to care about it)
+Added calcule_signe() : we now can type whatever number of +- signs. e.g. +---+12  = -12
+
+Version 1.3
+
+ericb 2016 April 30th
+Fixed the remaining default zero value, when entering a simple "\n"
+
+Version 1.2
+
+ericb 2016 April 12th
+Fixed more issues when entering bad numbers, including infinite loop
+because bString_Is_OK not correctly used in logical value
+
+ericb 2016 April 2nd
+Fixed: renamed buf in g_buf becasue it's a global array.
+
+Version 1.1 
+
+ericb 2016 April 2nd
+Improved string size. TODO : implement dynamic allocation
+Fixed string visibility in saisie_chaine_de_caracteres()
+
+Version 1.0
+
+ericb 2016 April 1st
+
+Fixed incorrect use of fgets
+Fixed -O3
+In progress : removing dead code
+
+ericb 2016 March 31st
+Fixed wrong type for 3rd and 4th parameters of saisie_nombre_entier_court signature's
+
+ericb 2016 March 29th
+More code cleanup
+More bug fixes
+Improved the b_String_Is_OK
+
+ericb 2016 March 28th
+
+Added min / max values to be entered
+Improved the constants in saisie_nombre.h
+Improved Makefile :
+- added devel versions, with current date
+- added VERSION_MICRO for intermediate versions of the project
+- improved real_clean target
+- improved clean target
+
+Started QA improvements
+Implemented scientific notation (simple) test
+Creation of first QA tests file, containing various tests (to be continued)
+Added improved changelog
+Code cleanup
+
+Version 0.8 
+ericb 2016 March 26th
+Fixed various issues :
+- fixed the loops ( 12" or 13( were valid numbers )
+- implemented QA tests
+- added parameters in the signature, to allow QA tests, and 
+- implemented scientific notation number
+- implemented new tests
+
+Version 0.7
+ericb 2015 Mars 24th
+Improved interface
+Fixed range values
+Implemented :
+- enter a short int
+- enter a long int
+- enter a real
+Draft for generic QA tests, as example
+
+Suggestions : implement menues, to select tests ?
+
+Implement me
+- enter a number in scientific notation format
+- QA tests with results
+- Menu to 
+
+Version 0.2 
+ericb 2015 April 10th
+Implemented : enter a string
+Fixed several formating issues
+
+Version 0.1 
+ericb 2015 April 1st 
+initial version : enter a real number ( conserves project ) without issue

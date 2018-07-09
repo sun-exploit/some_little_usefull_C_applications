@@ -1,0 +1,23 @@
+Saisie entier court;12;valeur convertie :;valeur prévue : 12
+Saisie entier court;12";valeur incorrecte
+Saisie entier court;12(;valeur incorrecte
+Saisie entier court;12!;valeur incorrecte
+Saisie entier court;12è;valeur incorrecte
+Saisie entier court;12a;valeur incorrecte
+Saisie entier court;12 ;valeur incorrecte
+Saisie entier court;12	;valeur incorrecte
+Saisie entier court;12-;valeur incorrect
+Saisie entier court;+-12;valeur convertie : -12;valeur prévue : -12
+Saisie entier court;-+12;valeur convertie : -12;valeur prévue : -12
+Saisie entier court;123;valeur convertie : 123;valeur prévue : 123
+Saisie entier court;12345;valeur convertie :12345;valeur prévue : 12345
+Saisie entier court;123456;valeur incorrecte
+Saisie entier court;1234567;valeur incorrecte
+Saisie entier court;12345678;valeur incorrecte
+Saisie entier court;-123;valeur convertie : -123;valeur prévue : -123
+Saisie entier court;-12345;valeur convertie :-12345;valeur prévue : -12345
+Saisie entier court;-123456;valeur incorrecte
+Saisie entier court;-1234567;valeur incorrecte
+Saisie entier court;-12345678;valeur incorrecte
+
+
