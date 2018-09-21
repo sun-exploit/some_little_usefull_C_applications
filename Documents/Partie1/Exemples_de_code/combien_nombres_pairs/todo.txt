@@ -1,0 +1,81 @@
+Travail à faire
+
+1. étudier le code, et en déduire l'algorithme
+
+Initialisation
+    valeurs entières :
+    compteur <-- 0
+    Constantes entières :
+    min <-- 10
+    max <-- 13
+Fin initialisation
+
+Début programme principal
+
+    POUR l'entier indice allant de min à max
+        FAIRE
+            SI indice est multiple de 2
+                FAIRE : incrémenter compteur
+            FIN SI
+    FIN POUR
+    Écrire "Il y a (compteur) nombres pairs entre min et max"
+Fin programme principal
+
+
+
+2. modifier l'algorithme pour que l'utilisateur puisse saisir 
+les valeurs min et max
+
+Initialisation
+    valeurs variables entières :
+    compteur <-- 0
+    min <-- 0
+    max <-- 0
+Fin initialisation
+
+Sous programme saisie
+    ÉCRIRE "Entrer la valeur de l'entier min"
+    LIRE min
+    ÉCRIRE "Entrer la valeur de l'entier max"
+    LIRE max
+Fin sous programme saisie
+
+Début programme principal
+    sous programme saisie
+    POUR l'entier indice allant de min à max
+        FAIRE
+            SI indice est multiple de 2
+                FAIRE : incrémenter compteur
+            FIN SI
+    FIN POUR
+    Écrire "Il y a (compteur) nombres pairs entre min et max"
+Fin programme principal
+
+
+3. étudier saisie et réutiliser la saisie de nombre entiers 
+dans combien_nombres_pairs
+
+4. créer l'arborescence du nouveau projet combien_nombre_pairs_interactif
+
+combien_nbres_pairs_interactif
+
+sous répertoires :
+build
+inc
+sources
++ Makefile générique
+
+On donnera le nom que l'on veut au binaire exécutable final
+
+
+5. compiler le programme, le tester et le faire exécuter pas à pas
+
+Compléments : présentation rapide de ldd et nm
+
+
+
+
+
+
+
+
