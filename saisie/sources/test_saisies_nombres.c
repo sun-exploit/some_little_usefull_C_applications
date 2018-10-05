@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "saisie_nombre.h"
+#include "saisie.h"
 #include "test_saisies_nombres.h"
 
 short int
@@ -24,7 +24,9 @@ test_saisies_nombres(void)
 short int
 test_saisie_entier_court(void)
 {
-  short int valeur_short_int = saisie_nombre_entier_court(TRUE, SHRT_MIN, SHRT_MAX);
+
+  fprintf(  stdout, "Saisir un nombre entier court compris entre %hd et %hd : ", SHRT_MIN, SHRT_MAX);
+  short int valeur_short_int = saisie_nombre_entier_court(SHRT_MIN, SHRT_MAX);
 
   fprintf(  stdout, "Nombre entier court saisi %hd \n", valeur_short_int );
   fprintf(  stdout,
@@ -37,21 +39,29 @@ test_saisie_entier_court(void)
 short int
 test_saisie_entier_long(void)
 {
-  long long int valeur_long_int = saisie_nombre_entier_long(TRUE, LLONG_MIN, LLONG_MAX);
+
+  fprintf(  stdout, "Saisir un nombre entier court compris entre %lld et %lld : ", LLONG_MIN, LLONG_MAX);
+
+  long long int valeur_long_int = saisie_nombre_entier_long(LLONG_MIN, LLONG_MAX);
 
   fprintf(  stdout, "Nombre entier long saisi %lld \n", valeur_long_int );
   fprintf(  stdout,
             "Vérification : le nombre saisi élevé au carré vaut %Lg \n",
-            (long double)valeur_long_int * (long double)valeur_long_int
-         );
+            (long double)valeur_long_int * (long double)valeur_long_int);
   return EXIT_SUCCESS;
 }
 
 short int
 test_saisie_reel(void)
 {
-  long double  valeur_double_float = saisie_nombre_reel(TRUE, -REEL_MAX, REEL_MAX );
+
+  fprintf(  stdout, "Entrer un nombre réel compris entre %g et %g : ", -REEL_MAX, REEL_MAX);
+  long double  valeur_double_float = saisie_nombre_reel(-REEL_MAX, REEL_MAX );
+
   fprintf(  stdout, "Nombre réel saisi %Lg \n", valeur_double_float);
+  fprintf(  stdout,
+            "Vérification : le nombre saisi élevé au carré vaut %Lg \n",
+            (long double)valeur_double_float * (long double)valeur_double_float);
 
   return EXIT_SUCCESS;
 }
@@ -59,7 +69,11 @@ test_saisie_reel(void)
 short int
 test_saisie_reel_notation_scientifique(void)
 {
-  long double  valeur_double_float = saisie_nombre_scientifique(TRUE, -REEL_MAX, REEL_MAX);
+
+  fprintf(  stdout, "Saisir un nombre réel en notation scientifique, et compris entre %g et %g : ", -REEL_MAX, REEL_MAX);
+
+  long double  valeur_double_float = saisie_nombre_scientifique(-REEL_MAX, REEL_MAX);
+
   fprintf(  stdout, "Nombre réel saisi %Lg \n", valeur_double_float);
 
   return EXIT_SUCCESS;

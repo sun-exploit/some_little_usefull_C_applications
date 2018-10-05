@@ -7,16 +7,24 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "saisie_nombre.h"
+#include "saisie.h"
 #include "test_saisies_nombres.h"
 #include "test_saisie_chaine.h"
+
 
 int
 main (void)
 {
-  int ret = system( "clear");
-  if (ret != 0 )
-   fprintf(stderr, "problème avec system");
+  efface_ecran();
+
+  char MotSaisi[MAX_BUFFER_SIZE];
+
+  fprintf(stdout, "Entrez ou mot, ou une chaîne de caractères (taille maxi : 512 caractères) :  \n");
+  saisie_chaine_de_caracteres();
+  strcpy(MotSaisi, g_buf); /* destination, source */
+  fprintf(stdout, "Vous avez saisi le mot : %s \n", MotSaisi);
+
+  /* simple example, to illustrate how things work */
   test_saisies_nombres();
   test_saisie_chaine();
   /* WRITE YOUR CODE HERE :-) */

@@ -1,7 +1,11 @@
+Version 1.8
 
-ericb 2018 July 9th
+2017 October 17
 
-Created gitlab repository
+Simplified the API
+Upgraded the documentation
+Removed some files
+Added one more test in the main
 
 Version 1.7
 

@@ -6,18 +6,20 @@
 CURRENT_DATE =  `date "+20%y-%m-%d"`
 BUILD_DIR = build
 VERSION_MAJOR = 1
-VERSION_MINOR = 7
+VERSION_MINOR = 9
 # comment me for exact milestones
 #VERSION_MICRO = _devel_${CURRENT_DATE}
 VERSION = ${VERSION_MAJOR}.${VERSION_MINOR}${VERSION_MICRO}
+
+OS_FLAGS = $(shell uname -s)
 
 SOURCES_DIR = sources
 APPLICATION_NAME = saisie
 BINARY_NAME = ${BUILD_DIR}/${APPLICATION_NAME}
 CC = gcc
-CC_FLAGS = -Wall -ansi -pedantic -O3
+CC_FLAGS = -Wall -ansi -O3
+
 CC_STD = -std=c99
-OS_FLAGS =
 OUTBIN = ${BUILD_DIR}/${APPLICATION_NAME}
 OUTBIN_DEBUG = ${BUILD_DIR}/${APPLICATION_NAME}_debug
 OUTBIN_ALL = 	$(OUTBIN) 	$(OUTBIN_DEBUG)
@@ -32,7 +34,10 @@ LD_FLAGS = -lm
 GCC_SECURITY_FLAGS = -fstack-protector -pie -fPIE -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -fno-builtin-memset
 OPTIMZATION_FLAG = -O3
 
-CFLAGS = ${CC_FLAGS} ${CC_STD} ${OS_FLAGS}
+GCC_SECURITY_FLAGS += -Wextra 
+# pb on Mac OS X, but -Wnon-literal-null-conversion is not available on Linux (tested gcc-5.4 only)
+
+CFLAGS = ${CC_FLAGS} ${CC_STD} -D${OS_FLAGS}
 CFLAGS_DEBUG = -g -DDEBUG
 
 OBJS = ${SOURCES_DIR}/${FILES}
@@ -41,21 +46,17 @@ OBJS = ${SOURCES_DIR}/${FILES}
 ARCHIVE_EXT = .tar.gz
 
 TO_BE_ZIPPED = \
-        sound \
-        images \
-        ressources \
         doc \
+        build \
         inc \
+        ressources \
         sources \
         Makefile \
-        compte_lignes.sh \
-        create_header.sh \
-        en_tete.c \
+        README.md \
         Changelog
 
 TO_BE_ZIPPED_BINARIES = \
         ${BUILD_DIR}
-
 
 # ici commence la creation des binaires
 
@@ -88,5 +89,4 @@ archive : all
 
 real_clean : clean
 	rm -rf ${APPLICATION_NAME}_${VERSION}${ARCHIVE_EXT}
-
 
