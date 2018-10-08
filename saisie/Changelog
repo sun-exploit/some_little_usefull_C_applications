@@ -1,5 +1,9 @@
 Version 1.8
 
+2018 OCtober 9th
+
+Replaced strcpy with a safer strncpy
+
 2017 October 17
 
 Simplified the API
