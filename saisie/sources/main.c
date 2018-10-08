@@ -21,7 +21,7 @@ main (void)
 
   fprintf(stdout, "Entrez ou mot, ou une chaîne de caractères (taille maxi : 512 caractères) :  \n");
   saisie_chaine_de_caracteres();
-  strncpy(MotSaisi, g_buf, strlen(g_buf)); /* destination, source */
+  strncpy(MotSaisi, g_buf, strlen(g_buf)); /* destination, source, taille chaine */
   fprintf(stdout, "Vous avez saisi le mot : %s \n", MotSaisi);
 
   /* simple example, to illustrate how things work */
