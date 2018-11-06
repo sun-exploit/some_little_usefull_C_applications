@@ -1,0 +1,4 @@
+http://open-freax.fr/code-qr-explications/
+https://www.lama.univ-savoie.fr/~hyvernat/Enseignement/1213/info528/tp1.html
+http://www.thonky.com/qr-code-tutorial/format-version-information
+http://blog.qartis.com/decoding-small-qr-codes-by-hand/

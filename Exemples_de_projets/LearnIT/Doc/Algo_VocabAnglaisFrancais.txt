@@ -1,0 +1,34 @@
+Variables :
+- "MotFrancais" de type char
+- "MotAnglais" de type char
+- "ligne" de type char
+- "saisie" de type char
+- Pointeur sur motTemp
+
+DEBUT PROGRAMME (VocabulaireFrancaisAnglais)
+
+POINTEUR sur "fichier" initialisé à NULL
+Ouverture du fichier "VocabAnglaisFrancais.csv" avec lecture seulement
+
+SI fichier != NULL
+	TANT QUE On lit une ligne
+		Stocker tout ce qui se trouve jusqu'à la virgule dans MotAnglais (la virgule exclue)
+		Stocker tout ce qui se trouve à partir de la virgule dans MotFrancais
+		ECRIRE "Traduction de : MotAnglais ? (Puis taper sur entrée)"
+		LIRE la saisie de l'utilisateur
+		AFFECTER resultat à la comparaison entre "saisie" et "MotFrancais" à l'aide de la fonction strcmp
+		SI "résultat" vaut 0
+			AFFICHER "Bravo. C'était la bonne réponse :-)"
+		SINON
+			AFFICHER "Faux. La réponse était MotFrancais"
+		FIN SI
+	FIN TANT QUE
+
+	SI la fermeture du fichier pose un problème
+		AFFICHER "Probleme de fermeture du fichier"
+	FIN SI
+SINON
+	AFFICHER "Problème d'ouverture du fichier"
+FIN SI
+
+FIN PROGRAMME

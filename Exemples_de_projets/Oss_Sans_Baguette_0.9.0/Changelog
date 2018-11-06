@@ -1,0 +1,106 @@
+Version 0.9.0
+BLARP 2016 June 8th
+Corrected some mistake in database
+Replaced END by Return
+
+Version 0.8.5
+BLARP 2016 June 7th
+Created Secret Option
+Modified initialisation of background music
+Added three more songs
+Modified visibility of case description
+Added full database
+Modified "forest in the river" by "weakness of Mépo"
+
+Version 0.8.3
+Eric Bachard 2016 June 7th
+More code factorization : pushed argv use far from main
+Added comments about how to use argv elsewhere than in main
+Fixed warnings with getcwd() with -O3 flag
+More code cleanup
+Added DEBUG2 for bootstrap investigations
+
+Version 0.8.2
+Eric Bachard 2016 June 5th
+More typos fixed in the database
+More code cleanup
+Added dependencies file in the devel archive (in the Makefile)
+Created dependencies file as a list of libraries (just in case something does not work)
+Added SDL libraries to the linker the usual way
+Using SDL_mixer1.x // what about upgrade to SDL_mixer2 ?
+Now playing music (loop in the background) !
+Added Impossible situations, causing the lose of the game
+Modified the data base accordingly
+
+Version 0.7.5
+Eric Bachard 2016 June 5th
+Fixed all warnings when using -O3 compilation flag
+Code cleanup
+Added some cosmetics in the game
+FIXME : when impossible, avoid to continue in a given direction
+Proposal : add new member(s) as booleans in the CASE structure,
+and replace the N,S,E,O with respectively XN,XS,XE and/or XO when
+it's not possible to continue in a given direction.
+Drawback : the database needs to be a bit modified (and regularly updated)
+
+Version 0.7
+Eric Bachard 2016 June 4th
+First "working" version => to be tested
+More code cleanup
+Missing : sound loop
+FIXME : add the sound (code is already written)
+
+Version 0.6
+Eric Bachard 2016 June 4th
+Fixed the uggly visibility issue for the array (strcpy is kind)
+Implemented database extraction
+Implemented array of structures containing all the information
+Splitted the code in several .c
+Improved the interface
+Removed dead code
+FIXME : started bootstrap implementation
+
+Version 0.3.4
+BLARP 2016 May 27th
+Replace "do ... while do ... while" by "do ... while"
+
+Version 0.3.2.1_beta
+BLARP 2016 May 27th
+Bugs Fix : Some mistakes are corrected
+
+Version 0.3.2
+BLARP 2016 May 25th
+New : Add some information to simplify the code, "saisie 1.5.0"
+In progress : removing dead code
+
+Version 0.3.1
+BLARP 2016 May 25th
+New : Add "fiche Mépo", change "menujeu.c" with a switch case
+
+Version 0.3
+BLARP 2016 May 20th
+New : Rules are edited, credits added at the end of game
+
+Version 0.2.3
+BLARP 2016 May 19th
+New : Add new texts, clean some ".h"
+Bugs fix : Rules are invisible
+
+Version 0.2.2
+BLARP 2016 May 14th
+New : Add "lieu.c" to see the name of the place
+Bugs fix : Impossibility to re-entry in "tableau.c"
+
+Version 0.2.1
+BLARP 2016 May 14th
+Bugs fix : Need to tap twice to make an action
+
+Version 0.2
+BLARP 2016 May 13th
+New : Segementation of code, add "saisie 1.4.3" made by M.BACHARD
+Addes new texts, rules and direction are remplaced by number
+Bugs fix : direction fixed
+
+Version 0.1
+BLARP 2016 April 28th
+Initial version : simple board 3x3 with direction NSEW

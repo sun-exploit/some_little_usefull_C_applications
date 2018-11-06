@@ -1,0 +1,27 @@
+﻿Variables : "choix" de type entier.
+
+DEBUT PROGRAMME
+
+ECRIRE "Bonjour et bienvenue dans ce programme d'apprentissage. Choisissez entre"
+
+FAIRE
+	ECRIRE "1. Vocabulaire Anglais-Francais"
+	ECRIRE "2. Vocabulaire Francais-Anglais"
+	ECRIRE "3. Ajouter des mots dans la bibliothèque"
+TANT QUE (choix != 1 ET choix != 2 ET choix != 3);
+
+LIRE "choix"
+
+SI le "choix" est à 1
+	EXECUTER la fonction VocabulaireAnglaisFrancais()
+	
+ET SI le choix est à 2
+	EXECUTER la fonction VocabulaireFrancaisAnglais()
+SINON
+	EXECUTER AjoutMotsVocabulaire();
+FIN SI
+
+
+ECRIRE "Merci et au revoir ;)"
+
+FIN PROGRAMME

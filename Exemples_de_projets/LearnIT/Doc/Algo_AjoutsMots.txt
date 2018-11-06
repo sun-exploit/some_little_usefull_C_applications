@@ -1,0 +1,9 @@
+Variables :
+- "NbreMots" est de type entier
+- "i" de type entier
+- 
+
+DEBUT PROGRAMME
+
+ECRIRE "Combien de mots souhaitez-vous ajouter ? "
+LIRE "

@@ -1,0 +1,98 @@
+# Makefile pour le projet OSS_Sans_Baguette
+# Auteur : BLARP  / mercredi 11 mai 2016, 07:14:11 (UTC+0200)
+# Ce document est sous Licence GPL v2
+# voir : http://www.gnu.org/licenses/gpl-2.0.html
+
+APPLICATION_NAME = Oss_Sans_Baguette
+VERSION = 1.1
+BUILD_DIR = build
+SOURCES_DIR = sources
+OS_FLAGS = -DMACOSX
+CC = gcc
+GCC_SECURITY_FLAGS = -fstack-protector -pie -fPIE -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security
+OUTBIN = $(APPLICATION_NAME)
+OUTBIN_DEBUG = dbg_$(APPLICATION_NAME)
+BINARY_NAME = ${BUILD_DIR}/${APPLICATION_NAME}
+FILES = *.c
+DEPS = $^ $(SOURCES_DIR)/SDLmain.m
+#LD_LIBRARY_PATH = $LD_LIBRARY_PATH:/usr/local/lib
+
+SDL_INCLUDE_DIR = \
+	-I/Library/Frameworks/SDL.framework/Versions/Current/Headers \
+	-I/Library/Frameworks/SDL_ttf.framework/Versions/Current/Headers \
+	-I/Library/Frameworks/SDL_image.framework/Versions/Current/Headers \
+	-I/Library/Frameworks/SDL_mixer.framework/Versions/Current/Headers
+
+INCLUDE_DIR = inc
+
+# every new function must be tested separately
+QA_TESTS = 1
+
+#CFLAGS = -I${INCLUDE_DIR} -Wall -ansi -pedantic -std=c99 ${OS_FLAGS} ${GCC_SECURITY_FLAGS}
+CFLAGS = -Wall -ansi -std=c99 ${OS_FLAGS} -DUNIT_TESTS=${QA_TESTS}
+CFLAGS_DEBUG = -g -DDEBUG -DUNIT_TESTS=${QA_TESTS}
+
+FRAMEWORKS =
+# only needed when building graphical applications
+#FRAMEWORKS = -framework Cocoa -framework SDL -framework SDL_mixer -framework SDL_image -framework SDL_ttf
+
+#LD_FLAGS = -lm
+
+OUTBIN_ALL = \
+	$(OUTBIN) \
+	$(OUTBIN_DEBUG)
+
+ARCHIVE_EXT = .tar.gz
+
+TO_BE_ZIPPED = \
+	sound \
+	images \
+	ressources \
+	doc \
+	inc \
+	sources \
+	Makefile-Linux \
+	Makefile-MacOSX \
+	Makefile \
+	create_header.sh \
+	en_tete.c \
+	select_OS.sh
+
+TO_BE_ZIPPED_BINARIES = \
+        ${BUILD_DIR}
+
+# ici commence la creation
+
+all : $(OUTBIN_ALL)
+
+$(OUTBIN) : $(SOURCES_DIR)/$(FILES)
+	$(CC) $(FRAMEWORKS) $(CFLAGS) ${GCC_SECURITY_FLAGS} -o $(BUILD_DIR)/$(OUTBIN) $(DEPS) -I$(INCLUDE_DIR) $(SDL_FLAGS) 
+
+$(OUTBIN_DEBUG) : $(SOURCES_DIR)/$(FILES)
+	$(CC) $(FRAMEWORKS) $(CFLAGS) ${GCC_SECURITY_FLAGS} $(CFLAGS_DEBUG) -o $(BUILD_DIR)/$(OUTBIN_DEBUG) $(DEPS) -I$(INCLUDE_DIR) $(SDL_FLAGS) 
+
+clean : archive_clean
+	rm -rf $(BUILD_DIR)/$(OUTBIN) $(BUILD_DIR)/$(OUTBIN_DEBUG) ${EXEC_NAME}_${VERSION} ${EXEC_NAME}_${VERSION}${ARCHIVE_EXT}
+	rm -rf $(BUILD_DIR)/dbg*.dSYM
+	rm -rf ${APPLICATION_NAME}_${VERSION}
+	@echo -n "Fichiers binaires supprimés \n"
+
+devel: clean
+	mkdir ${APPLICATION_NAME}_${VERSION}
+	mkdir -p ${APPLICATION_NAME}_${VERSION}/$(BUILD_DIR)
+	cp -R ${TO_BE_ZIPPED} ${APPLICATION_NAME}_${VERSION}
+	tar cvzf ${APPLICATION_NAME}_${VERSION}${ARCHIVE_EXT} ${APPLICATION_NAME}_${VERSION}
+
+archive : all
+	mkdir ${APPLICATION_NAME}_${VERSION}
+	mkdir -p ${APPLICATION_NAME}_${VERSION}/$(BUILD_DIR)
+	cp -R ${TO_BE_ZIPPED} ${APPLICATION_NAME}_${VERSION}
+	cp -R ${TO_BE_ZIPPED_BINARIES} ${APPLICATION_NAME}_${VERSION}
+	tar cvzf ${APPLICATION_NAME}_${VERSION}${ARCHIVE_EXT} ${APPLICATION_NAME}_${VERSION}
+
+archive_clean :
+	rm -rf ${APPLICATION_NAME}_${VERSION}${ARCHIVE_EXT}
+
+real_clean : clean
+	rm -rf _*
+

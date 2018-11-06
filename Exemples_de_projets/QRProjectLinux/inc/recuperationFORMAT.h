@@ -1,0 +1,8 @@
+#ifndef RECUPERATIONFORMAT_H_INCLUDED
+#define RECUPERATIONFORMAT_H_INCLUDED
+
+int initialisation_MASK_FORMAT();
+int recuperation_FORMAT();
+int application_MASK_FORMAT();
+
+#endif // RECUPERATIONFORMAT_H_INCLUDED

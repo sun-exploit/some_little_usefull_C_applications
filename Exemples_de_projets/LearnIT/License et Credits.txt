@@ -1,0 +1,49 @@
+﻿License CC-BY-NC (License Creative Commons sans utilisation commerciale)
+                                                                                          
+Remerciements à :
+
+-Oueidat Mikel
+ : Pour avoir élaboré à partir de l'algorithme le code en langage C
+-Woodley Maxime : Pour avoir réalisé le PowerPoint et participé à l'écriture de l'algorithme
+-Mendez Anais : Pour avoir participé à l'algorithme
+-Hallard Louis
+ : Pour avoir fixé l'organisation des tâches au sein du groupe
+-Martin Xavier
+ : Pour avoir testé le programme et signalé les bugs (ou problèmes) rencontrés et essayé de chercher des moyens d'amélioration.
+
+Dernieres modifications : Eric Bachard 13 nov 2014 
+- creation Makefile,
+- modification sources (correction warnings, etc)
+- modification arborescence sources
+- correction code pour ouverture fichiers dans le repertoire ressources
+- amelioration experience utilisateur
+- modification macros dans le makefile
+- correction warnings
+- correction ouverture fichier données
+- définition constantes pour le menu
+- implémentation utilisation des constantes dans le menu
+- utilisation de switch (permet d'insérer de nouvelles entrées dans le menu, en cas d'ajouts futurs)
+- correction \n manquants
+- correction bugs: != au lieu de == dans le test de comparaison à EOF (pb fermeture fichier)
+- ajout macros pour débogage ( #ifdef DEBUG ... #endif ) dans le code
+- ajout exemples pour autres traduction (spanish / french)
+- ajout nouvelles constantes
+- réorganisation valeur des constantes ajoutées : implémentation nouvelle interface 
+  (séparation entrée de menu et sens du choix fait par l'utilisateur)
+- correction bug : vidage du buffer après comparaison de la chaîne entrée et l'expression traduite
+- main.h renommé en constants.h
+- initialisation de choix dans main.c (et pas dans main.h / constants.h)
+- en cours: test longueur chaine et suppression des '\r' et '\n' parasites dans les expressions comparées
+- simplification de main
+- création de menu.c
+- correction bug EOF dans tous les .c
+- correction du bug \r\n vs \r dans la comparaison des chaînes (ajouté : strlen + size pour savoir)
+- testé fonctionel pour les 2 traductions
+
+TODO :
+- factoriser le test des chaînes de caractères, pour éviter la redondance
+- rendre completement fonctionnel le programme
+- faire un test complet de ce programme
+- ... à continuer
+
+

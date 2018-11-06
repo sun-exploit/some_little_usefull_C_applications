@@ -1,0 +1,107 @@
+# Makefile pour le projet Tamagotchi_IFT1
+# Auteur : Noémie Boillot  / dimanche 8 mai 2016, 20:18:47 (UTC+0200)
+# Ce document est sous Licence GPL v2
+# voir : http://www.gnu.org/licenses/gpl-2.0.html
+
+BUILD_DIR = build
+VERSION_MAJOR = 0
+VERSION_MINOR = 4.1
+VERSION = ${VERSION_MAJOR}.${VERSION_MINOR}
+
+SOURCES_DIR = sources
+APPLICATION_NAME = QRProject
+BINARY_NAME = ${BUILD_DIR}/${APPLICATION_NAME}
+CC = gcc
+CC_FLAGS = -Wall -ansi -pedantic
+CC_STD = -std=c99
+OS_FLAGS =
+OUTBIN = ${BUILD_DIR}/${APPLICATION_NAME}
+OUTBIN_DEBUG = ${BUILD_DIR}/${APPLICATION_NAME}_debug
+OUTBIN_ALL = 	$(OUTBIN) 	$(OUTBIN_DEBUG)
+
+SDL_INCLUDE_DIR = /usr/include/SDL
+INCLUDE_DIR = inc
+FILES = *.c
+DEPS = $^
+
+SDL_FLAGS =
+# use this when building graphical applications
+#SDL_FLAGS = -lSDL -lSDL_image -lSDL_mixer -lSDL_ttf $(sdl-config --static-libs)
+
+LD_FLAGS = -lm ${SDL_FLAGS}
+
+GCC_SECURITY_FLAGS = -fstack-protector -pie -fPIE -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security
+
+# every new function must be tested separately
+QA_TESTS = 1
+
+CFLAGS = ${CC_FLAGS} ${CC_STD} ${OS_FLAGS} -DUNIT_TESTS=${QA_TESTS}
+CFLAGS_DEBUG = -g -DDEBUG -DUNIT_TESTS=${QA_TESTS}
+
+OBJS = ${SOURCES_DIR}/${FILES}
+
+
+#${BINARY_NAME}: ${OBJS}
+#	${CC} ${CFLAGS} ${GCC_SECURITY_FLAGS} -o $@ $^ ${LD_FLAGS}
+
+#${BINARY_NAME}_debug: ${OBJS}
+#	${CC} ${CFLAGS} ${GCC_SECURITY_FLAGS} ${CFLAGS_DEBUG} -o $@ $^ ${LD_FLAGS}
+
+#clean:
+#	${RM} *.o ${BINARY_NAME} ${BINARY_NAME}_debug
+#	${RM} -rf ${BINARY_NAME}_debug.dSYM
+
+
+ARCHIVE_EXT =.tar.gz
+
+TO_BE_ZIPPED = \
+	sound \
+	images \
+	ressources \
+	doc \
+	inc \
+	sources \
+	Makefile-Linux \
+	Makefile-MacOSX \
+	Makefile \
+	create_header.sh \
+	en_tete.c \
+	select_OS.sh
+
+TO_BE_ZIPPED_BINARIES = \
+	${BUILD_DIR}
+
+
+# ici commence la creation
+
+all : $(OUTBIN_ALL)
+
+
+$(OUTBIN) : $(OBJS)
+	$(CC) $(CFLAGS) ${GCC_SECURITY_FLAGS} -o $@ $(DEPS) -I$(INCLUDE_DIR) $(LD_FLAGS)
+
+$(OUTBIN_DEBUG) : $(OBJS)
+	$(CC) $(CFLAGS) ${GCC_SECURITY_FLAGS} $(CFLAGS_DEBUG) -o $(OUTBIN_DEBUG) $(DEPS) -I$(INCLUDE_DIR) $(LD_FLAGS)
+
+clean :
+	rm -rf $(OUTBIN) $(OUTBIN_DEBUG) ${EXEC_NAME}_${VERSION} ${EXEC_NAME}_${VERSION}${ARCHIVE_EXT}
+	rm -rf $(BUILD_DIR)/dbg*.dSYM
+	rm -rf ${APPLICATION_NAME}_*
+	echo Fichiers binaires supprimés.
+
+devel: clean
+	mkdir ${APPLICATION_NAME}_${VERSION}
+	mkdir -p ${APPLICATION_NAME}_${VERSION}/build
+	cp -R ${TO_BE_ZIPPED} ${APPLICATION_NAME}_${VERSION}
+	tar cvzf ${APPLICATION_NAME}_${VERSION}${ARCHIVE_EXT} ${APPLICATION_NAME}_${VERSION}
+
+archive : all
+	mkdir ${APPLICATION_NAME}_${VERSION}
+	cp -R ${TO_BE_ZIPPED} ${APPLICATION_NAME}_${VERSION}
+	cp -R ${TO_BE_ZIPPED_BINARIES} ${APPLICATION_NAME}_${VERSION}
+	tar cvzf ${APPLICATION_NAME}_${VERSION}${ARCHIVE_EXT} ${APPLICATION_NAME}_${VERSION}
+
+real_clean : clean
+	rm -rf ${APPLICATION_NAME}_*${ARCHIVE_EXT}
+
+

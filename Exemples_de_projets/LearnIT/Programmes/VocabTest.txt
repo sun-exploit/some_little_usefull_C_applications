@@ -1,0 +1,6 @@
+calopsitte,cockatiel
+téléphone,phone
+bouteille,bottle
+lunettes,glasses
+idée,idea
+dents,teeth 

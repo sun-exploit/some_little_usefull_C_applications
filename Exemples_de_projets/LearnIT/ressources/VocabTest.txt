@@ -1,0 +1,12 @@
+calopsitte,cockatiel
+téléphone,phone
+bouteille,bottle
+lunettes,glasses
+idée,idea
+dents,teeth
+mur,wall
+pied ,foot
+stylo ,pen
+chien ,dog
+flèche ,arrow
+vélo ,bike 
