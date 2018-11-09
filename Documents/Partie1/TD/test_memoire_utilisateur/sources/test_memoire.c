@@ -109,7 +109,7 @@ short lire_reponse(void)
 {
     short number;
     fprintf(stdout, "Entrer votre reponse et appuyer sur entree \n");
-    fscanf(stdin, "%hd", &number); 
+    number = saisie_nombre_entier_court(VAL_MIN, VAL_MAX);
     efface_ecran();
     return number;
 }
