@@ -1,19 +1,10 @@
-/*                                                   *
- * Auteur : Eric Bachard  version originale : 2004   *
- * Ce document est sous Licence GPL v2               *
- * voir : http://www.gnu.org/licenses/gpl-2.0.html   */
-
 #include <stdio.h> 
 #include <time.h> 
 #include <stdlib.h> 
-#include "boolean.h"
-#include "constants.h"
-#include "initialize_time.h"
-#include "efface_ecran.h"
 
-int tableau_initial[ARRAY_SIZE];
-int nombre_de_points = 0;
-int *p_nombre_de_points = 0;
+#include "initialize_time.h"
+#include "saisie.h"
+#include "constants.h"
 
 /* Ce programme est un BROUILLON : ne marche pas tres bien  */
 /* merci de  le noter */
@@ -40,27 +31,27 @@ short tirage_tableau_initial(int *tableau_initial)
 {
     int indice;
     int alea = 0;
-    BOOL bSortie = TRUE;
+    BOOL sortie;
     initialize_time();
     for ( indice = 0; indice < ARRAY_SIZE ; indice++) 
     {
         do {
-            bSortie = TRUE;
+            sortie = TRUE;
 
             do {
                 /* generate a value between VAL_MIN and VAL_MAX */
-                alea = rand()% VAL_MAX + 1;
+                alea = rand()%VAL_MAX + 1;
             } while (alea < VAL_MIN);
-
+            
             /* we must be sure the value does not exist already */
             int valeur;
             for (valeur = 0; valeur < indice ; valeur++)
             {
                 if ( tableau_initial[valeur] == alea )
-                    bSortie = FALSE;
+                    sortie = FALSE;
             }
         }
-        while (FALSE == bSortie);
+        while (FALSE == sortie);
 
         /* fill the array */
         tableau_initial[indice] = alea;
@@ -80,7 +71,7 @@ short generer_numero_element_tableau(int tableau_initial[])
     short alea2;
     do {
         /* generate a value between 0 and 9 */
-        alea2 = rand() % ARRAY_SIZE;
+        alea2 = rand()%ARRAY_SIZE;
     } while(0 == tableau_initial[alea2]);
 
     return alea2;
@@ -112,7 +103,6 @@ short afficher_question(int value)
 
 /* --------------------------------- */
 
-
 /* ---------lire_reponse------------ */
 
 short lire_reponse(void)
@@ -132,30 +122,21 @@ short lire_reponse(void)
 
 short affichage_resultat_question(int tableau_initial[], int rang, int number, int *p_nombre_de_points)
 {
-
-#ifdef DEBUG
+    /*hack*/
     fprintf(stdout, "vrai = %d ",tableau_initial[rang]);
     fprintf(stdout,"entre = %d \n",number); 
-#endif
-
     if( number == tableau_initial[rang] )
     {
         fprintf(stdout, "C'est juste \n");
         *p_nombre_de_points += 2;
-
-#ifdef DEBUG
+	/*hack*/
 	printf("Nombre de points local %d \n", *p_nombre_de_points);
-#endif
-
     }
     else
         fprintf(stdout,"C'est faux \n");
 
-#ifdef DEBUG
-    getchar();
-    efface_ecran();
-#endif
-
+/*	getchar();
+    efface_ecran();*/
     return EXIT_SUCCESS;
 }
 
@@ -197,24 +178,13 @@ void affichage_tableau_initial(int tableau_initial[])
 /* --------------------------------- */
 
 
-short int questionnement( void)
-{
-  int k;
-  for(k = 0; k < ARRAY_SIZE; k++)
-  {
-    short rang = generer_numero_element_tableau(tableau_initial);
-    afficher_question(rang);
-    short reponse = lire_reponse();
-    affichage_resultat_question(tableau_initial, rang, reponse, p_nombre_de_points);
-    effacer_element_tableau(rang,tableau_initial);
-  }
-	return EXIT_SUCCESS;
-}
 
 /* ---------- main ----------- */
 
 int main(void)
 {        
+    int nombre_de_points = 0;
+    int *p_nombre_de_points;
     p_nombre_de_points = &nombre_de_points; 
     int tableau_initial[ARRAY_SIZE];
     initialisation(tableau_initial);
@@ -223,9 +193,18 @@ int main(void)
     fprintf(stdout," appuyer sur Entree pour continuer");
     getchar();
     efface_ecran();
-    questionnement();
+    int k;
+    for(k = 0; k < ARRAY_SIZE; k++)
+    {
+        short rang = generer_numero_element_tableau(tableau_initial);
+        afficher_question(rang);
+        short reponse = lire_reponse();
+        affichage_resultat_question(tableau_initial, rang, reponse, p_nombre_de_points);
+        effacer_element_tableau(rang,tableau_initial);
+    
+    }
     affichage_resultat_final(nombre_de_points);
-    return EXIT_SUCCESS; 
+  	return EXIT_SUCCESS; 
 }
 
 /* --------------------------------- */
