@@ -28,8 +28,7 @@ void efface_ecran(void)
  * will be copied.  Always NUL terminates (unless siz == 0).
  * Returns strlen(src); if retval >= siz, truncation occurred.
  */
-size_t
-strlcpy(char *dst, const char *src, size_t siz)
+size_t strlcpy(char *dst, const char *src, size_t siz)
 {
         char *d = dst;
         const char *s = src;
@@ -105,7 +104,7 @@ void initialize_string (char * aString)
 void calcule_signe( char * saisie)
 {
 
-  BOOL b_nombre_avec_signe = ( (saisie[0] == '-') || (saisie[0] == '+' ));
+  bool b_nombre_avec_signe = ( (saisie[0] == '-') || (saisie[0] == '+' ));
 
   if ( b_nombre_avec_signe )
   {
@@ -140,13 +139,13 @@ short int saisie_nombre_entier_court(short int hd_min, short int hd_max)
     fprintf(stderr, "Problème avec les limites");
     exit(EXIT_FAILURE);
   }
-  bString_Is_OK = TRUE;
+  bString_Is_OK = true;
   char saisie[MAX_BUFFER_SIZE];
   char temp[MAX_BUFFER_SIZE];
 
   do
   {
-    bString_Is_OK = TRUE;
+    bString_Is_OK = true;
     fflush(stdin);
     /* we must empty temp at every iteration else, the risk to never go out the loop is real */
     initialize_string(temp);
@@ -168,25 +167,25 @@ short int saisie_nombre_entier_court(short int hd_min, short int hd_max)
     calcule_signe(saisie);
 
     if ( !(isdigit(saisie[0])) && (saisie[0] != '-') )
-      bString_Is_OK = FALSE;
+      bString_Is_OK = false;
 
     short int compteur = 1;
     while ((saisie[compteur] != '\0') && (compteur < MAX_BUFFER_SIZE))
     {
       if ( !(isdigit(saisie[compteur])) )
-         bString_Is_OK = FALSE;
+         bString_Is_OK = false;
 #ifdef DEBUG
       fprintf(stderr, "saisie[%hd] == %c \n", compteur, saisie[compteur]);
 #endif
       compteur++;
     }
     /* general case : sscanf (saisie, "%[-+0-9.,]s", temp); */
-    if ( TRUE == bString_Is_OK )
+    if ( true == bString_Is_OK )
       sscanf (saisie, "%[-+0-9^.,a-z]s", temp);
     else
-      bString_Is_OK = FALSE;
+      bString_Is_OK = false;
 
-  } while ( (( strtol(temp, (char **)NULL, 10) < hd_min ) || ( strtol(temp, (char **)NULL, 10) > hd_max)) || (bString_Is_OK == FALSE) );
+  } while ( (( strtol(temp, (char **)NULL, 10) < hd_min ) || ( strtol(temp, (char **)NULL, 10) > hd_max)) || (bString_Is_OK == false) );
   return (short int)strtol(temp, (char **)NULL, 10);
 }
 
@@ -198,13 +197,13 @@ long long int saisie_nombre_entier_long(long long int Ld_min, long long int Ld_m
     fprintf(stderr, "Problème avec les limites");
     exit(EXIT_FAILURE);
   }
-  bString_Is_OK = TRUE;
+  bString_Is_OK = true;
   char saisie[MAX_BUFFER_SIZE];
   char temp[MAX_BUFFER_SIZE];
 
   do
   {
-    bString_Is_OK = TRUE;
+    bString_Is_OK = true;
     fflush(stdin);
     initialize_string(temp);
     initialize_string(saisie);
@@ -217,25 +216,25 @@ long long int saisie_nombre_entier_long(long long int Ld_min, long long int Ld_m
     calcule_signe(saisie);
 
     if ( !(isdigit(saisie[0])) && (saisie[0] != '-') )
-      bString_Is_OK = FALSE;
+      bString_Is_OK = false;
 
     short int indice = 1;
     while ((saisie[indice] != '\0') && (indice < MAX_BUFFER_SIZE))
     {
       if ( !(isdigit(saisie[indice])) )
-         bString_Is_OK = FALSE;
+         bString_Is_OK = false;
 #ifdef DEBUG
       fprintf(stderr, "saisie[%hd] == %c \n", indice, saisie[indice]);
 #endif
       indice++;
     }
 
-    if ( TRUE == bString_Is_OK )
+    if ( true == bString_Is_OK )
       sscanf (saisie, "%[-+0-9^.,a-zA-Z]s", temp);
     else
-      bString_Is_OK = FALSE;
+      bString_Is_OK = false;
 
-  } while ( (( strtoll(temp, (char **)NULL, 10) < Ld_min ) || ( strtoll(temp, (char **)NULL, 10) > Ld_max)) || (bString_Is_OK == FALSE) );
+  } while ( (( strtoll(temp, (char **)NULL, 10) < Ld_min ) || ( strtoll(temp, (char **)NULL, 10) > Ld_max)) || (bString_Is_OK == false) );
 
   return (long int)strtoll(temp, (char **)NULL, 10);
 }
@@ -249,13 +248,13 @@ long double saisie_nombre_reel(long double Lfmin, long double Lfmax)
     fprintf(stderr, "Problème avec les limites");
     exit(EXIT_FAILURE);
   }
-  bString_Is_OK = TRUE;
+  bString_Is_OK = true;
   char saisie[MAX_BUFFER_SIZE];
   char temp[MAX_BUFFER_SIZE];
 
   do
   {
-    bString_Is_OK = TRUE;
+    bString_Is_OK = true;
     initialize_string(temp);
     initialize_string(saisie);
 
@@ -268,7 +267,7 @@ long double saisie_nombre_reel(long double Lfmin, long double Lfmax)
     short int dots_count = 0;
 
     if ( !(isdigit(saisie[0])) && (saisie[0] != '-') && (saisie[0] != '.') )
-      bString_Is_OK = FALSE;
+      bString_Is_OK = false;
 
     short int indice2 = 1;
     while ( (saisie[indice2] != '\0') && ( indice2 < MAX_BUFFER_SIZE ) )
@@ -287,15 +286,15 @@ long double saisie_nombre_reel(long double Lfmin, long double Lfmax)
                                && (saisie[indice2] != 'E' )
                                && (saisie[indice2] != 'e' )
          )
-         bString_Is_OK = FALSE;
+         bString_Is_OK = false;
 
       indice2++;
     }
 
     if ( (dots_count > 1) )
-      bString_Is_OK = FALSE;
+      bString_Is_OK = false;
 
-    if ( TRUE == bString_Is_OK ) /* If only digits, count = 0 (not digits) + 1 character ending the string */
+    if ( true == bString_Is_OK ) /* If only digits, count = 0 (not digits) + 1 character ending the string */
     {
       /* IMPORTANT : the character type order seems to count  when checking the string !*/
       short int aRealErr = sscanf (saisie, "%[-,+,0-9,e,.]s", temp);
@@ -308,7 +307,7 @@ long double saisie_nombre_reel(long double Lfmin, long double Lfmax)
   fprintf( stderr, "temp = %s \n", temp);
   fprintf( stderr, "strtod(temp, (char **)NULL) = %f \n", strtod(temp, (char **)NULL));
 #endif
-  } while ( (( strtod(temp, (char **)NULL) < Lfmin ) || (strtod(temp, (char **)NULL) > Lfmax)) || (bString_Is_OK == FALSE) );
+  } while ( (( strtod(temp, (char **)NULL) < Lfmin ) || (strtod(temp, (char **)NULL) > Lfmax)) || (bString_Is_OK == false) );
 
   return strtod(temp, (char **)NULL);
 }
@@ -323,13 +322,13 @@ long double saisie_nombre_scientifique(long double Lfmin, long double Lfmax)
     exit(EXIT_FAILURE);
   }
 
-  bString_Is_OK = TRUE;
+  bString_Is_OK = true;
   char saisie[MAX_BUFFER_SIZE];
   char temp[MAX_BUFFER_SIZE];
 
   do
   {
-    bString_Is_OK = TRUE;
+    bString_Is_OK = true;
     initialize_string(temp);
     initialize_string(saisie);
 
@@ -342,7 +341,7 @@ long double saisie_nombre_scientifique(long double Lfmin, long double Lfmax)
     calcule_signe( saisie);
 
     if ( !(isdigit(saisie[0])) && (saisie[0] != '-') && (saisie[0] != '.') )
-      bString_Is_OK = FALSE;
+      bString_Is_OK = false;
 
     short int dots_count = 0;
     short int indice3 = 1;
@@ -362,15 +361,15 @@ long double saisie_nombre_scientifique(long double Lfmin, long double Lfmax)
                                       && (saisie[indice3] != 'E' )
                                       && (saisie[indice3] != 'e' )
          )
-         bString_Is_OK = FALSE;
+         bString_Is_OK = false;
 
       indice3++;
     }
 
     if (dots_count > 1 )
-      bString_Is_OK = FALSE;
+      bString_Is_OK = false;
 
-    if ( TRUE == bString_Is_OK ) /* If only digits, count = 0 (not digits) + 1 character ending the string */
+    if ( true == bString_Is_OK ) /* If only digits, count = 0 (not digits) + 1 character ending the string */
     {
       /* IMPORTANT : the character type order seems to count  when checking the string !*/
       short int anErr = sscanf (saisie, "%[-,+,0-9,E,e,.]LLg", temp);
@@ -378,7 +377,7 @@ long double saisie_nombre_scientifique(long double Lfmin, long double Lfmax)
       (void)anErr; // makes the compiler happy
     }
 
-  } while ( (( strtod(temp, (char **)NULL) < Lfmin ) || (strtod(temp, (char **)NULL)> Lfmax)) || (bString_Is_OK == FALSE));
+  } while ( (( strtod(temp, (char **)NULL) < Lfmin ) || (strtod(temp, (char **)NULL)> Lfmax)) || (bString_Is_OK == false));
 
   return strtod(temp, (char **)NULL);
 }
