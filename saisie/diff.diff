@@ -1,0 +1,548 @@
+diff --git a/Documents/Partie1/TD/test_memoire_utilisateur/sources/test_memoire.c b/Documents/Partie1/TD/test_memoire_utilisateur/sources/test_memoire.c
+index c7e2c04..38a4bfb 100644
+--- a/Documents/Partie1/TD/test_memoire_utilisateur/sources/test_memoire.c
++++ b/Documents/Partie1/TD/test_memoire_utilisateur/sources/test_memoire.c
+@@ -184,8 +184,7 @@ void affichage_tableau_initial(int tableau_initial[])
+ int main(void)
+ {        
+     int nombre_de_points = 0;
+-    int *p_nombre_de_points;
+-    p_nombre_de_points = &nombre_de_points; 
++    int *p_nombre_de_points = &nombre_de_points; 
+     int tableau_initial[ARRAY_SIZE];
+     initialisation(tableau_initial);
+     tirage_tableau_initial(tableau_initial);
+@@ -207,4 +206,4 @@ int main(void)
+   	return EXIT_SUCCESS; 
+ }
+ 
+-/* --------------------------------- */
+\ No newline at end of file
++/* --------------------------------- */
+diff --git a/saisie/inc/saisie.h b/saisie/inc/saisie.h
+index fc0a1aa..85d298f 100644
+--- a/saisie/inc/saisie.h
++++ b/saisie/inc/saisie.h
+@@ -19,39 +19,15 @@
+ #define inconnu                nan("0/0")
+ 
+ #include <stdio.h>
+-#include <stdlib.h>
+ #include <string.h>
+-#include <errno.h>
+-#include <ctype.h>
+ #include <limits.h>
+-
+-typedef enum Bool {
+-    FALSE,
+-    TRUE
+-} BOOL;
++#include <stdbool.h>
+ 
+ /* strings */
+ 
+-char g_buf[MAX_BUFFER_SIZE];
+-
+-void lit_entree(char *);
+-
+-void clean_string(const char *, FILE *);
+-
+ short int saisie_chaine_de_caracteres(void);
+ 
+-void initialize_string(char *);
+-
+-BOOL bString_Is_OK;
+-
+-#ifndef Darwin
+-size_t strlcpy(char *dst, const char *src, size_t siz);
+-#endif
+-
+-/* utils */
+-
+-void efface_ecran(void);
+-
++char g_buf[MAX_BUFFER_SIZE];
+ 
+ /* numbers */
+ 
+diff --git a/saisie/sources/main.c b/saisie/sources/main.c
+index c8b0693..ef3b5fa 100644
+--- a/saisie/sources/main.c
++++ b/saisie/sources/main.c
+@@ -8,6 +8,7 @@
+ #include <stdlib.h>
+ 
+ #include "saisie.h"
++#include "utils.h"
+ #include "test_saisies_nombres.h"
+ #include "test_saisie_chaine.h"
+ 
+@@ -19,7 +20,7 @@ main (void)
+ 
+   char MotSaisi[MAX_BUFFER_SIZE];
+ 
+-  fprintf(stdout, "Entrez ou mot, ou une chaîne de caractères (taille maxi : 512 caractères) :  \n");
++  fprintf(stdout, "Entrez ou mot, ou une chaine de caracteres (taille maxi : 512 caracteres) :  \n");
+   saisie_chaine_de_caracteres();
+   strncpy(MotSaisi, g_buf, strlen(g_buf)); /* destination, source, taille chaine */
+   fprintf(stdout, "Vous avez saisi le mot : %s \n", MotSaisi);
+diff --git a/saisie/sources/saisie.c b/saisie/sources/saisie.c
+index 8c9c65c..3ee50cd 100644
+--- a/saisie/sources/saisie.c
++++ b/saisie/sources/saisie.c
+@@ -1,82 +1,44 @@
+ /* saisie.c from saisie_project
+  * Author : Eric Bachard Mai 2005 13:59:01 CEST
+- * This document is under GPL v2 License
+  * This document is under GPL v2 License. See : http://www.gnu.org/licenses/gpl-2.0.html */
+ 
+ #define _GNU_SOURCE
+ #include "saisie.h"
++#include "utils.h"
++
++static bool bString_Is_OK = false;
+ 
+ /* ---------efface_ecran------------ */
+ 
+-void efface_ecran(void)
++static void clean_string(const char *g_buf, FILE *aStream)
+ {
+-    FILE * stdout = popen("clear", "w");
+-    int anErr = pclose( stdout) ;
+-
+-    if (anErr != 0 ) 
+-       fprintf(stderr,"problem with clear\n");
+-}
+-
+-
+-/* strlcpy based on OpenBSDs strlcpy */
+-
+-/* Apple implented its own strlcpy, and a clash occurs if not protected */
+-#ifndef Darwin
++  char * aChar = strchr(g_buf,'\n');
+ 
+-/*
+- * Copy src to string dst of size siz.  At most siz-1 characters
+- * will be copied.  Always NUL terminates (unless siz == 0).
+- * Returns strlen(src); if retval >= siz, truncation occurred.
+- */
+-size_t
+-strlcpy(char *dst, const char *src, size_t siz)
+-{
+-        char *d = dst;
+-        const char *s = src;
+-        size_t n = siz;
+-
+-        /* Copy as many bytes as will fit */
+-        if (n != 0 && --n != 0) {
+-                do {
+-                        if ((*d++ = *s++) == 0)
+-                                break;
+-                } while (--n != 0);
+-        }
+-
+-        /* Not enough room in dst, add NUL and traverse rest of src */
+-        if (n == 0) {
+-                if (siz != 0)
+-                        *d = '\0';                /* NUL-terminate dst */
+-                while (*s++)
+-                        ;
+-        }
+-
+-        return(s - src - 1);        /* count does not include NUL */
++  if (aChar != NULL)
++    *aChar = 0;
++  else
++  {
++    int aCharValue;
++    while ((aCharValue = fgetc(aStream)) != '\n' && aCharValue != EOF);
++  }
+ }
+ 
+-#endif
+-
+-
+-void lit_entree (char *aString)
++static void lit_entree (char *aString)
+ {
+   short int anErr = (fgets(aString, sizeof(g_buf), stdin) == NULL);
+   if ( anErr != 0 )
+-    fprintf(stdout, "Problème avec la valeur saisie \n");
++    fprintf(stdout, "Probleme avec la valeur saisie \n");
+ 
+   clean_string(aString, stdin);
+ }
+ 
+-void clean_string(const char *g_buf, FILE *aStream)
+-{
+-  char * aChar = strchr(g_buf,'\n');
+ 
+-  if (aChar != NULL)
+-    *aChar = 0;
+-  else
+-  {
+-    int aCharValue;
+-    while ((aCharValue = fgetc(aStream)) != '\n' && aCharValue != EOF);
+-  }
++static void initialize_string (char * aString)
++{
++  /* to avoid security issue, 
++     using -fno-builtin-memset gcc option at build time
++   */
++  memset(aString, '\0', MAX_BUFFER_SIZE);
+ }
+ 
+ short int saisie_chaine_de_caracteres()
+@@ -85,27 +47,14 @@ short int saisie_chaine_de_caracteres()
+   char * entree = g_buf;
+   lit_entree (entree);
+ 
+-#ifdef DEBUG
+-  fprintf (stdout, "Vous avez saisi :  %s\n", entree);
+-#endif
+-
+   return EXIT_SUCCESS;
+ }
+ 
+-void initialize_string (char * aString)
+-{
+-  size_t aSize = sizeof(aString);
+-
+-  /* to avoid security issue, 
+-     using -fno-builtin-memset gcc option at build time
+-   */
+-  memset(aString, '\0', aSize);
+-}
+ 
+ void calcule_signe( char * saisie)
+ {
+ 
+-  BOOL b_nombre_avec_signe = ( (saisie[0] == '-') || (saisie[0] == '+' ));
++  bool b_nombre_avec_signe = ( (saisie[0] == '-') || (saisie[0] == '+' ));
+ 
+   if ( b_nombre_avec_signe )
+   {
+@@ -137,16 +86,16 @@ short int saisie_nombre_entier_court(short int hd_min, short int hd_max)
+ {
+   if (hd_min > hd_max)
+   {
+-    fprintf(stderr, "Problème avec les limites");
++    fprintf(stderr, "Probleme avec les limites");
+     exit(EXIT_FAILURE);
+   }
+-  bString_Is_OK = TRUE;
++  bString_Is_OK = true;
+   char saisie[MAX_BUFFER_SIZE];
+   char temp[MAX_BUFFER_SIZE];
+ 
+   do
+   {
+-    bString_Is_OK = TRUE;
++    bString_Is_OK = true;
+     fflush(stdin);
+     /* we must empty temp at every iteration else, the risk to never go out the loop is real */
+     initialize_string(temp);
+@@ -155,7 +104,7 @@ short int saisie_nombre_entier_court(short int hd_min, short int hd_max)
+     short int noErr = saisie_chaine_de_caracteres();
+ 
+     if ( noErr != 0 )
+-      fprintf(stdout, "Problème avec la valeur saisie \n");
++      fprintf(stdout, "Probleme avec la valeur saisie \n");
+ 
+     /* strlcpy( destination, source, sizeof(source) ) */
+ #ifndef Darwin
+@@ -168,25 +117,25 @@ short int saisie_nombre_entier_court(short int hd_min, short int hd_max)
+     calcule_signe(saisie);
+ 
+     if ( !(isdigit(saisie[0])) && (saisie[0] != '-') )
+-      bString_Is_OK = FALSE;
++      bString_Is_OK = false;
+ 
+     short int compteur = 1;
+     while ((saisie[compteur] != '\0') && (compteur < MAX_BUFFER_SIZE))
+     {
+       if ( !(isdigit(saisie[compteur])) )
+-         bString_Is_OK = FALSE;
++         bString_Is_OK = false;
+ #ifdef DEBUG
+       fprintf(stderr, "saisie[%hd] == %c \n", compteur, saisie[compteur]);
+ #endif
+       compteur++;
+     }
+     /* general case : sscanf (saisie, "%[-+0-9.,]s", temp); */
+-    if ( TRUE == bString_Is_OK )
++    if ( true == bString_Is_OK )
+       sscanf (saisie, "%[-+0-9^.,a-z]s", temp);
+     else
+-      bString_Is_OK = FALSE;
++      bString_Is_OK = false;
+ 
+-  } while ( (( strtol(temp, (char **)NULL, 10) < hd_min ) || ( strtol(temp, (char **)NULL, 10) > hd_max)) || (bString_Is_OK == FALSE) );
++  } while ( (( strtol(temp, (char **)NULL, 10) < hd_min ) || ( strtol(temp, (char **)NULL, 10) > hd_max)) || (bString_Is_OK == false) );
+   return (short int)strtol(temp, (char **)NULL, 10);
+ }
+ 
+@@ -195,80 +144,78 @@ long long int saisie_nombre_entier_long(long long int Ld_min, long long int Ld_m
+ {
+   if (Ld_min > Ld_max)
+   {
+-    fprintf(stderr, "Problème avec les limites");
++    fprintf(stderr, "Probleme avec les limites");
+     exit(EXIT_FAILURE);
+   }
+-  bString_Is_OK = TRUE;
++  bString_Is_OK = true;
+   char saisie[MAX_BUFFER_SIZE];
+   char temp[MAX_BUFFER_SIZE];
+ 
+   do
+   {
+-    bString_Is_OK = TRUE;
++    bString_Is_OK = true;
+     fflush(stdin);
+     initialize_string(temp);
+     initialize_string(saisie);
+ 
+     short int noErr = saisie_chaine_de_caracteres();
+     if ( noErr != 0 )
+-      fprintf(stdout, "Problème avec la valeur saisie \n");
++      fprintf(stdout, "Probleme avec la valeur saisie \n");
+ 
+     strlcpy(saisie, g_buf, sizeof(g_buf));
+     calcule_signe(saisie);
+ 
+     if ( !(isdigit(saisie[0])) && (saisie[0] != '-') )
+-      bString_Is_OK = FALSE;
++      bString_Is_OK = false;
+ 
+     short int indice = 1;
+     while ((saisie[indice] != '\0') && (indice < MAX_BUFFER_SIZE))
+     {
+       if ( !(isdigit(saisie[indice])) )
+-         bString_Is_OK = FALSE;
++         bString_Is_OK = false;
+ #ifdef DEBUG
+       fprintf(stderr, "saisie[%hd] == %c \n", indice, saisie[indice]);
+ #endif
+       indice++;
+     }
+ 
+-    if ( TRUE == bString_Is_OK )
++    if ( true == bString_Is_OK )
+       sscanf (saisie, "%[-+0-9^.,a-zA-Z]s", temp);
+     else
+-      bString_Is_OK = FALSE;
++      bString_Is_OK = false;
+ 
+-  } while ( (( strtoll(temp, (char **)NULL, 10) < Ld_min ) || ( strtoll(temp, (char **)NULL, 10) > Ld_max)) || (bString_Is_OK == FALSE) );
++  } while ( (( strtoll(temp, (char **)NULL, 10) < Ld_min ) || ( strtoll(temp, (char **)NULL, 10) > Ld_max)) || (bString_Is_OK == false) );
+ 
+   return (long int)strtoll(temp, (char **)NULL, 10);
+ }
+ 
+-
+-
+ long double saisie_nombre_reel(long double Lfmin, long double Lfmax)
+ {
+   if (Lfmin > Lfmax)
+   {
+-    fprintf(stderr, "Problème avec les limites");
++    fprintf(stderr, "Probleme avec les limites");
+     exit(EXIT_FAILURE);
+   }
+-  bString_Is_OK = TRUE;
++  bString_Is_OK = true;
+   char saisie[MAX_BUFFER_SIZE];
+   char temp[MAX_BUFFER_SIZE];
+ 
+   do
+   {
+-    bString_Is_OK = TRUE;
++    bString_Is_OK = true;
+     initialize_string(temp);
+     initialize_string(saisie);
+ 
+     short int noErr = saisie_chaine_de_caracteres();
+     if ( noErr != 0 )
+-      fprintf(stdout, "Problème avec la valeur saisie \n");
++      fprintf(stdout, "Probleme avec la valeur saisie \n");
+ 
+     strlcpy(saisie, g_buf, sizeof(g_buf));
+     calcule_signe(saisie);
+     short int dots_count = 0;
+ 
+     if ( !(isdigit(saisie[0])) && (saisie[0] != '-') && (saisie[0] != '.') )
+-      bString_Is_OK = FALSE;
++      bString_Is_OK = false;
+ 
+     short int indice2 = 1;
+     while ( (saisie[indice2] != '\0') && ( indice2 < MAX_BUFFER_SIZE ) )
+@@ -287,15 +234,15 @@ long double saisie_nombre_reel(long double Lfmin, long double Lfmax)
+                                && (saisie[indice2] != 'E' )
+                                && (saisie[indice2] != 'e' )
+          )
+-         bString_Is_OK = FALSE;
++         bString_Is_OK = false;
+ 
+       indice2++;
+     }
+ 
+     if ( (dots_count > 1) )
+-      bString_Is_OK = FALSE;
++      bString_Is_OK = false;
+ 
+-    if ( TRUE == bString_Is_OK ) /* If only digits, count = 0 (not digits) + 1 character ending the string */
++    if ( true == bString_Is_OK ) /* If only digits, count = 0 (not digits) + 1 character ending the string */
+     {
+       /* IMPORTANT : the character type order seems to count  when checking the string !*/
+       short int aRealErr = sscanf (saisie, "%[-,+,0-9,e,.]s", temp);
+@@ -308,7 +255,7 @@ long double saisie_nombre_reel(long double Lfmin, long double Lfmax)
+   fprintf( stderr, "temp = %s \n", temp);
+   fprintf( stderr, "strtod(temp, (char **)NULL) = %f \n", strtod(temp, (char **)NULL));
+ #endif
+-  } while ( (( strtod(temp, (char **)NULL) < Lfmin ) || (strtod(temp, (char **)NULL) > Lfmax)) || (bString_Is_OK == FALSE) );
++  } while ( (( strtod(temp, (char **)NULL) < Lfmin ) || (strtod(temp, (char **)NULL) > Lfmax)) || (bString_Is_OK == false) );
+ 
+   return strtod(temp, (char **)NULL);
+ }
+@@ -319,30 +266,30 @@ long double saisie_nombre_scientifique(long double Lfmin, long double Lfmax)
+ {
+   if (Lfmin > Lfmax)
+   {
+-    fprintf(stderr, "Problème avec les limites");
++    fprintf(stderr, "Probleme avec les limites");
+     exit(EXIT_FAILURE);
+   }
+ 
+-  bString_Is_OK = TRUE;
++  bString_Is_OK = true;
+   char saisie[MAX_BUFFER_SIZE];
+   char temp[MAX_BUFFER_SIZE];
+ 
+   do
+   {
+-    bString_Is_OK = TRUE;
++    bString_Is_OK = true;
+     initialize_string(temp);
+     initialize_string(saisie);
+ 
+     short int noErr = saisie_chaine_de_caracteres();
+     if ( noErr != 0 )
+-      fprintf(stdout, "Problème avec la valeur saisie \n");
++      fprintf(stdout, "Probleme avec la valeur saisie \n");
+ 
+     /* strlcpy(destination, source, sizeof(source)) */
+     strlcpy(saisie, g_buf, sizeof(g_buf));
+     calcule_signe( saisie);
+ 
+     if ( !(isdigit(saisie[0])) && (saisie[0] != '-') && (saisie[0] != '.') )
+-      bString_Is_OK = FALSE;
++      bString_Is_OK = false;
+ 
+     short int dots_count = 0;
+     short int indice3 = 1;
+@@ -362,15 +309,15 @@ long double saisie_nombre_scientifique(long double Lfmin, long double Lfmax)
+                                       && (saisie[indice3] != 'E' )
+                                       && (saisie[indice3] != 'e' )
+          )
+-         bString_Is_OK = FALSE;
++         bString_Is_OK = false;
+ 
+       indice3++;
+     }
+ 
+     if (dots_count > 1 )
+-      bString_Is_OK = FALSE;
++      bString_Is_OK = false;
+ 
+-    if ( TRUE == bString_Is_OK ) /* If only digits, count = 0 (not digits) + 1 character ending the string */
++    if ( true == bString_Is_OK ) /* If only digits, count = 0 (not digits) + 1 character ending the string */
+     {
+       /* IMPORTANT : the character type order seems to count  when checking the string !*/
+       short int anErr = sscanf (saisie, "%[-,+,0-9,E,e,.]LLg", temp);
+@@ -378,7 +325,7 @@ long double saisie_nombre_scientifique(long double Lfmin, long double Lfmax)
+       (void)anErr; // makes the compiler happy
+     }
+ 
+-  } while ( (( strtod(temp, (char **)NULL) < Lfmin ) || (strtod(temp, (char **)NULL)> Lfmax)) || (bString_Is_OK == FALSE));
++  } while ( (( strtod(temp, (char **)NULL) < Lfmin ) || (strtod(temp, (char **)NULL)> Lfmax)) || (bString_Is_OK == false));
+ 
+   return strtod(temp, (char **)NULL);
+ }
+diff --git a/saisie/sources/test_saisie_chaine.c b/saisie/sources/test_saisie_chaine.c
+index bb03021..f33f1b3 100644
+--- a/saisie/sources/test_saisie_chaine.c
++++ b/saisie/sources/test_saisie_chaine.c
+@@ -6,17 +6,17 @@
+ 
+ #include <stdio.h>
+ #include <stdlib.h>
+-
++#include "utils.h"
+ #include "saisie.h"
+ 
+ short int
+ test_saisie_chaine(void)
+ {
+   char chaine_saisie[MAX_BUFFER_SIZE];
+-  fprintf (stdout, "saisissez une chaine de caractères (et appuyez sur la touche Entrée) : ");
++  fprintf (stdout, "saisissez une chaine de caracteres (et appuyez sur la touche Entree) : ");
+   saisie_chaine_de_caracteres();
+   strlcpy(chaine_saisie, g_buf, sizeof(g_buf));
+ 
+-  fprintf(stdout, "vous avez tapé la chaine de caractères : %s \n", chaine_saisie);
++  fprintf(stdout, "vous avez tape la chaine de caracteres : %s \n", chaine_saisie);
+   return EXIT_SUCCESS;
+ }
+diff --git a/saisie/sources/test_saisies_nombres.c b/saisie/sources/test_saisies_nombres.c
+index 876c5a3..75c5e15 100644
+--- a/saisie/sources/test_saisies_nombres.c
++++ b/saisie/sources/test_saisies_nombres.c
+@@ -30,7 +30,7 @@ test_saisie_entier_court(void)
+ 
+   fprintf(  stdout, "Nombre entier court saisi %hd \n", valeur_short_int );
+   fprintf(  stdout,
+-            "Vérification : le nombre saisi élevé au carré vaut %d \n",
++            "Verification : le nombre saisi eleve au carre vaut %d \n",
+             (int) valeur_short_int * valeur_short_int
+          );
+   return EXIT_SUCCESS;
+@@ -46,7 +46,7 @@ test_saisie_entier_long(void)
+ 
+   fprintf(  stdout, "Nombre entier long saisi %lld \n", valeur_long_int );
+   fprintf(  stdout,
+-            "Vérification : le nombre saisi élevé au carré vaut %Lg \n",
++            "Verification : le nombre saisi eleve au carre vaut %Lg \n",
+             (long double)valeur_long_int * (long double)valeur_long_int);
+   return EXIT_SUCCESS;
+ }
+@@ -55,12 +55,12 @@ short int
+ test_saisie_reel(void)
+ {
+ 
+-  fprintf(  stdout, "Entrer un nombre réel compris entre %g et %g : ", -REEL_MAX, REEL_MAX);
++  fprintf(  stdout, "Entrer un nombre reel compris entre %g et %g : ", -REEL_MAX, REEL_MAX);
+   long double  valeur_double_float = saisie_nombre_reel(-REEL_MAX, REEL_MAX );
+ 
+-  fprintf(  stdout, "Nombre réel saisi %Lg \n", valeur_double_float);
++  fprintf(  stdout, "Nombre reel saisi %Lg \n", valeur_double_float);
+   fprintf(  stdout,
+-            "Vérification : le nombre saisi élevé au carré vaut %Lg \n",
++            "Verification : le nombre saisi eleve au carre vaut %Lg \n",
+             (long double)valeur_double_float * (long double)valeur_double_float);
+ 
+   return EXIT_SUCCESS;
+@@ -70,11 +70,11 @@ short int
+ test_saisie_reel_notation_scientifique(void)
+ {
+ 
+-  fprintf(  stdout, "Saisir un nombre réel en notation scientifique, et compris entre %g et %g : ", -REEL_MAX, REEL_MAX);
++  fprintf(  stdout, "Saisir un nombre reel en notation scientifique, et compris entre %g et %g : ", -REEL_MAX, REEL_MAX);
+ 
+   long double  valeur_double_float = saisie_nombre_scientifique(-REEL_MAX, REEL_MAX);
+ 
+-  fprintf(  stdout, "Nombre réel saisi %Lg \n", valeur_double_float);
++  fprintf(  stdout, "Nombre reel saisi %Lg \n", valeur_double_float);
+ 
+   return EXIT_SUCCESS;
+ }

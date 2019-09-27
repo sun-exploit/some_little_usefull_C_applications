@@ -19,35 +19,15 @@
 #define inconnu                nan("0/0")
 
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
-#include <errno.h>
-#include <ctype.h>
 #include <limits.h>
 #include <stdbool.h>
 
 /* strings */
 
-char g_buf[MAX_BUFFER_SIZE];
-
-void lit_entree(char *);
-
-void clean_string(const char *, FILE *);
-
 short int saisie_chaine_de_caracteres(void);
 
-void initialize_string(char *);
-
-bool bString_Is_OK;
-
-#ifndef Darwin
-size_t strlcpy(char *dst, const char *src, size_t siz);
-#endif
-
-/* utils */
-
-void efface_ecran(void);
-
+char g_buf[MAX_BUFFER_SIZE];
 
 /* numbers */
 

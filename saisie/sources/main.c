@@ -8,6 +8,7 @@
 #include <stdlib.h>
 
 #include "saisie.h"
+#include "utils.h"
 #include "test_saisies_nombres.h"
 #include "test_saisie_chaine.h"
 
@@ -19,7 +20,7 @@ main (void)
 
   char MotSaisi[MAX_BUFFER_SIZE];
 
-  fprintf(stdout, "Entrez ou mot, ou une chaîne de caractères (taille maxi : 512 caractères) :  \n");
+  fprintf(stdout, "Entrez ou mot, ou une chaine de caracteres (taille maxi : 512 caracteres) :  \n");
   saisie_chaine_de_caracteres();
   strncpy(MotSaisi, g_buf, strlen(g_buf)); /* destination, source, taille chaine */
   fprintf(stdout, "Vous avez saisi le mot : %s \n", MotSaisi);

@@ -30,7 +30,7 @@ test_saisie_entier_court(void)
 
   fprintf(  stdout, "Nombre entier court saisi %hd \n", valeur_short_int );
   fprintf(  stdout,
-            "Vérification : le nombre saisi élevé au carré vaut %d \n",
+            "Verification : le nombre saisi eleve au carre vaut %d \n",
             (int) valeur_short_int * valeur_short_int
          );
   return EXIT_SUCCESS;
@@ -46,7 +46,7 @@ test_saisie_entier_long(void)
 
   fprintf(  stdout, "Nombre entier long saisi %lld \n", valeur_long_int );
   fprintf(  stdout,
-            "Vérification : le nombre saisi élevé au carré vaut %Lg \n",
+            "Verification : le nombre saisi eleve au carre vaut %Lg \n",
             (long double)valeur_long_int * (long double)valeur_long_int);
   return EXIT_SUCCESS;
 }
@@ -55,12 +55,12 @@ short int
 test_saisie_reel(void)
 {
 
-  fprintf(  stdout, "Entrer un nombre réel compris entre %g et %g : ", -REEL_MAX, REEL_MAX);
+  fprintf(  stdout, "Entrer un nombre reel compris entre %g et %g : ", -REEL_MAX, REEL_MAX);
   long double  valeur_double_float = saisie_nombre_reel(-REEL_MAX, REEL_MAX );
 
-  fprintf(  stdout, "Nombre réel saisi %Lg \n", valeur_double_float);
+  fprintf(  stdout, "Nombre reel saisi %Lg \n", valeur_double_float);
   fprintf(  stdout,
-            "Vérification : le nombre saisi élevé au carré vaut %Lg \n",
+            "Verification : le nombre saisi eleve au carre vaut %Lg \n",
             (long double)valeur_double_float * (long double)valeur_double_float);
 
   return EXIT_SUCCESS;
@@ -70,11 +70,11 @@ short int
 test_saisie_reel_notation_scientifique(void)
 {
 
-  fprintf(  stdout, "Saisir un nombre réel en notation scientifique, et compris entre %g et %g : ", -REEL_MAX, REEL_MAX);
+  fprintf(  stdout, "Saisir un nombre reel en notation scientifique, et compris entre %g et %g : ", -REEL_MAX, REEL_MAX);
 
   long double  valeur_double_float = saisie_nombre_scientifique(-REEL_MAX, REEL_MAX);
 
-  fprintf(  stdout, "Nombre réel saisi %Lg \n", valeur_double_float);
+  fprintf(  stdout, "Nombre reel saisi %Lg \n", valeur_double_float);
 
   return EXIT_SUCCESS;
 }

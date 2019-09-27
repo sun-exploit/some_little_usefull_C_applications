@@ -1,71 +1,16 @@
 /* saisie.c from saisie_project
  * Author : Eric Bachard Mai 2005 13:59:01 CEST
- * This document is under GPL v2 License
  * This document is under GPL v2 License. See : http://www.gnu.org/licenses/gpl-2.0.html */
 
 #define _GNU_SOURCE
 #include "saisie.h"
+#include "utils.h"
+
+static bool bString_Is_OK = false;
 
 /* ---------efface_ecran------------ */
 
-void efface_ecran(void)
-{
-    FILE * stdout = popen("clear", "w");
-    int anErr = pclose( stdout) ;
-
-    if (anErr != 0 ) 
-       fprintf(stderr,"problem with clear\n");
-}
-
-
-/* strlcpy based on OpenBSDs strlcpy */
-
-/* Apple implented its own strlcpy, and a clash occurs if not protected */
-#ifndef Darwin
-
-/*
- * Copy src to string dst of size siz.  At most siz-1 characters
- * will be copied.  Always NUL terminates (unless siz == 0).
- * Returns strlen(src); if retval >= siz, truncation occurred.
- */
-size_t strlcpy(char *dst, const char *src, size_t siz)
-{
-        char *d = dst;
-        const char *s = src;
-        size_t n = siz;
-
-        /* Copy as many bytes as will fit */
-        if (n != 0 && --n != 0) {
-                do {
-                        if ((*d++ = *s++) == 0)
-                                break;
-                } while (--n != 0);
-        }
-
-        /* Not enough room in dst, add NUL and traverse rest of src */
-        if (n == 0) {
-                if (siz != 0)
-                        *d = '\0';                /* NUL-terminate dst */
-                while (*s++)
-                        ;
-        }
-
-        return(s - src - 1);        /* count does not include NUL */
-}
-
-#endif
-
-
-void lit_entree (char *aString)
-{
-  short int anErr = (fgets(aString, sizeof(g_buf), stdin) == NULL);
-  if ( anErr != 0 )
-    fprintf(stdout, "Problème avec la valeur saisie \n");
-
-  clean_string(aString, stdin);
-}
-
-void clean_string(const char *g_buf, FILE *aStream)
+static void clean_string(const char *g_buf, FILE *aStream)
 {
   char * aChar = strchr(g_buf,'\n');
 
@@ -78,28 +23,33 @@ void clean_string(const char *g_buf, FILE *aStream)
   }
 }
 
+static void lit_entree (char *aString)
+{
+  short int anErr = (fgets(aString, sizeof(g_buf), stdin) == NULL);
+  if ( anErr != 0 )
+    fprintf(stdout, "Probleme avec la valeur saisie \n");
+
+  clean_string(aString, stdin);
+}
+
+
+static void initialize_string (char * aString)
+{
+  /* to avoid security issue, 
+     using -fno-builtin-memset gcc option at build time
+   */
+  memset(aString, '\0', MAX_BUFFER_SIZE);
+}
+
 short int saisie_chaine_de_caracteres()
 {
   initialize_string(g_buf);
   char * entree = g_buf;
   lit_entree (entree);
 
-#ifdef DEBUG
-  fprintf (stdout, "Vous avez saisi :  %s\n", entree);
-#endif
-
   return EXIT_SUCCESS;
 }
 
-void initialize_string (char * aString)
-{
-  size_t aSize = sizeof(aString);
-
-  /* to avoid security issue, 
-     using -fno-builtin-memset gcc option at build time
-   */
-  memset(aString, '\0', aSize);
-}
 
 void calcule_signe( char * saisie)
 {
@@ -136,7 +86,7 @@ short int saisie_nombre_entier_court(short int hd_min, short int hd_max)
 {
   if (hd_min > hd_max)
   {
-    fprintf(stderr, "Problème avec les limites");
+    fprintf(stderr, "Probleme avec les limites");
     exit(EXIT_FAILURE);
   }
   bString_Is_OK = true;
@@ -154,7 +104,7 @@ short int saisie_nombre_entier_court(short int hd_min, short int hd_max)
     short int noErr = saisie_chaine_de_caracteres();
 
     if ( noErr != 0 )
-      fprintf(stdout, "Problème avec la valeur saisie \n");
+      fprintf(stdout, "Probleme avec la valeur saisie \n");
 
     /* strlcpy( destination, source, sizeof(source) ) */
 #ifndef Darwin
@@ -194,7 +144,7 @@ long long int saisie_nombre_entier_long(long long int Ld_min, long long int Ld_m
 {
   if (Ld_min > Ld_max)
   {
-    fprintf(stderr, "Problème avec les limites");
+    fprintf(stderr, "Probleme avec les limites");
     exit(EXIT_FAILURE);
   }
   bString_Is_OK = true;
@@ -210,7 +160,7 @@ long long int saisie_nombre_entier_long(long long int Ld_min, long long int Ld_m
 
     short int noErr = saisie_chaine_de_caracteres();
     if ( noErr != 0 )
-      fprintf(stdout, "Problème avec la valeur saisie \n");
+      fprintf(stdout, "Probleme avec la valeur saisie \n");
 
     strlcpy(saisie, g_buf, sizeof(g_buf));
     calcule_signe(saisie);
@@ -239,13 +189,11 @@ long long int saisie_nombre_entier_long(long long int Ld_min, long long int Ld_m
   return (long int)strtoll(temp, (char **)NULL, 10);
 }
 
-
-
 long double saisie_nombre_reel(long double Lfmin, long double Lfmax)
 {
   if (Lfmin > Lfmax)
   {
-    fprintf(stderr, "Problème avec les limites");
+    fprintf(stderr, "Probleme avec les limites");
     exit(EXIT_FAILURE);
   }
   bString_Is_OK = true;
@@ -260,7 +208,7 @@ long double saisie_nombre_reel(long double Lfmin, long double Lfmax)
 
     short int noErr = saisie_chaine_de_caracteres();
     if ( noErr != 0 )
-      fprintf(stdout, "Problème avec la valeur saisie \n");
+      fprintf(stdout, "Probleme avec la valeur saisie \n");
 
     strlcpy(saisie, g_buf, sizeof(g_buf));
     calcule_signe(saisie);
@@ -318,7 +266,7 @@ long double saisie_nombre_scientifique(long double Lfmin, long double Lfmax)
 {
   if (Lfmin > Lfmax)
   {
-    fprintf(stderr, "Problème avec les limites");
+    fprintf(stderr, "Probleme avec les limites");
     exit(EXIT_FAILURE);
   }
 
@@ -334,7 +282,7 @@ long double saisie_nombre_scientifique(long double Lfmin, long double Lfmax)
 
     short int noErr = saisie_chaine_de_caracteres();
     if ( noErr != 0 )
-      fprintf(stdout, "Problème avec la valeur saisie \n");
+      fprintf(stdout, "Probleme avec la valeur saisie \n");
 
     /* strlcpy(destination, source, sizeof(source)) */
     strlcpy(saisie, g_buf, sizeof(g_buf));
