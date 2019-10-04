@@ -2,7 +2,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <boolean.h>
+#include <stdbool.h>
 
 #include <sys/time.h>  /* gettimeofday() */
 #include <unistd.h>    /* CLOCK_REALTIME */
@@ -13,7 +13,7 @@
 */
 
 /* une seule fois */
-static BOOL b_once = TRUE;
+static bool b_once = true;
 
 /* C structure containing a given time in microsecond, and more */
 struct timeval tv;
@@ -43,13 +43,13 @@ int main (void)
         count++;
       }
 
-      if (b_once == FALSE)
+      if (b_once == false)
         fprintf (stdout, "Durée entre 2 tirages : %ld micro secondes \n",utime2 -utime1 );
 
       utime1 = utime2;
 
       // pattern type singleton
-      b_once = FALSE;
+      b_once = false;
 
   }
   return EXIT_SUCCESS;
