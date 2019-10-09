@@ -1,9 +1,11 @@
 #include <stdio.h> 
 #include <time.h> 
 #include <stdlib.h> 
+#include <stdbool.h>
 
 #include "initialize_time.h"
 #include "saisie.h"
+#include "efface_ecran.h"
 #include "constants.h"
 
 /* Ce programme est un BROUILLON : ne marche pas tres bien  */
@@ -31,12 +33,12 @@ short tirage_tableau_initial(int *tableau_initial)
 {
     int indice;
     int alea = 0;
-    BOOL sortie;
+    bool sortie;
     initialize_time();
     for ( indice = 0; indice < ARRAY_SIZE ; indice++) 
     {
         do {
-            sortie = TRUE;
+            sortie = true;
 
             do {
                 /* generate a value between VAL_MIN and VAL_MAX */
@@ -48,10 +50,10 @@ short tirage_tableau_initial(int *tableau_initial)
             for (valeur = 0; valeur < indice ; valeur++)
             {
                 if ( tableau_initial[valeur] == alea )
-                    sortie = FALSE;
+                    sortie = false;
             }
         }
-        while (FALSE == sortie);
+        while (false == sortie);
 
         /* fill the array */
         tableau_initial[indice] = alea;
