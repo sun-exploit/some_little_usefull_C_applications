@@ -3,7 +3,7 @@
 /*
  * Auteur:  Eric Bachard  / 3 novembre 2004
  * Ce document est sous Licence MIT
- * voir LICENCE.txt dans le répertoire parent
+ * voir efface_ecran.h_LICENCE.txt dans le répertoire parent
  */
 
 #ifndef __EFFACE_ECRAN_H
