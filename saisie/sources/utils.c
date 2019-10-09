@@ -3,25 +3,9 @@
 #define _GNU_SOURCE
 #include "utils.h"
 
-/* ---------efface_ecran------------ */
-
-void efface_ecran(void)
-{
-#ifdef _WIN32
-    // https://support.microsoft.com/en-us/help/99261/how-to-performing-clear-screen-cls-in-a-console-application
-    system("cls");
-#else
-    FILE * stdout = popen("clear", "w");
-    int anErr = pclose( stdout) ;
-
-    if (anErr != 0 ) 
-       fprintf(stderr,"problem with clear\n");
-#endif
-}
-
 /* strlcpy based on OpenBSDs strlcpy */
 
-/* Apple implented its own strlcpy, and a clash occurs if not protected */
+/* Apple implemented its own strlcpy, and a clash occurs if not protected */
 #ifndef Darwin
 
 /*
