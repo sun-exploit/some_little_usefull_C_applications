@@ -13,8 +13,6 @@
 
 /* strings */
 
-void efface_ecran(void);
-
 #ifndef Darwin
 size_t strlcpy(char *, const char *, size_t);
 #endif
