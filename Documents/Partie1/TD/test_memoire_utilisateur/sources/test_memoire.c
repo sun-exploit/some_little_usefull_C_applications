@@ -3,7 +3,7 @@
 #include <stdlib.h> 
 #include <stdbool.h>
 
-#include "initialize_time.h"
+#include "initialize_rand.h"
 #include "saisie.h"
 #include "efface_ecran.h"
 #include "constants.h"
@@ -34,7 +34,7 @@ short tirage_tableau_initial(int *tableau_initial)
     int indice;
     int alea = 0;
     bool sortie;
-    initialize_time();
+    initialize_rand();
     for ( indice = 0; indice < ARRAY_SIZE ; indice++) 
     {
         do {
@@ -69,7 +69,7 @@ short tirage_tableau_initial(int *tableau_initial)
 
 short generer_numero_element_tableau(int tableau_initial[])
 {
-    initialize_time();
+    initialize_rand();
     short alea2;
     do {
         /* generate a value between 0 and 9 */
