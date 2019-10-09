@@ -6,6 +6,10 @@
 #include "saisie.h"
 #include "utils.h"
 
+#ifndef _ISOC99_SOURCE
+#define _ISOC99_SOURCE
+#endif
+
 static bool bString_Is_OK = false;
 
 /* ---------efface_ecran------------ */
