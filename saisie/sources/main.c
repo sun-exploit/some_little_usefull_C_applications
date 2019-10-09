@@ -9,6 +9,7 @@
 
 #include "saisie.h"
 #include "utils.h"
+#include "efface_ecran.h"
 #include "test_saisies_nombres.h"
 #include "test_saisie_chaine.h"
 
