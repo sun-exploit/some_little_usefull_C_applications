@@ -184,8 +184,7 @@ void affichage_tableau_initial(int tableau_initial[])
 int main(void)
 {        
     int nombre_de_points = 0;
-    int *p_nombre_de_points;
-    p_nombre_de_points = &nombre_de_points; 
+    int *p_nombre_de_points = &nombre_de_points; 
     int tableau_initial[ARRAY_SIZE];
     initialisation(tableau_initial);
     tirage_tableau_initial(tableau_initial);
