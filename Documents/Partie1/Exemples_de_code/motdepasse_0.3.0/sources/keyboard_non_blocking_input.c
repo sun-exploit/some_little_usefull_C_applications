@@ -20,11 +20,7 @@
 #define CMIN 1
 #define CMAX 255
 
-#define CHAR_PLUS  0x2B
-#define CHAR_MINUS 0x2D
-#define CHAR_Q  0x51
-#define CHAR_q  0x71
-
+#define CHAR_ESC 27
 
 int main(void)
 {
@@ -32,7 +28,7 @@ int main(void)
 
   int c = 0;
 
-  fprintf( stdout, "Appuyer sur q ou Q pour quitter \n");
+  fprintf( stdout, "Pour quitter, appuyer sur la touche échap (ESC) \n\n");
 
   while (false == bQuit)
   {
@@ -49,13 +45,12 @@ int main(void)
 
     switch (c)
     {
-        case CHAR_Q:
-        case CHAR_q:
+        case CHAR_ESC:
             bQuit = true;
-          break;
+        break;
 
         default:
-          break;
+        break;
     }
   }
   return EXIT_SUCCESS;
