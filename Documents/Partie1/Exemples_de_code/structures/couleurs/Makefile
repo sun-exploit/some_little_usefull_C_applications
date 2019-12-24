@@ -50,7 +50,6 @@ $(OUTBIN_DEBUG) : $(OBJS)
 clean :
 	rm -rf $(BUILD_DIR)/*.o
 	rm -rf $(OUTBIN) $(OUTBIN_DEBUG) ${EXEC_NAME}_${VERSION}
-	rm -rf $(BUILD_DIR)/dbg*.dSYM
 	rm -rf ${APPLICATION_NAME}_${VERSION}
 	echo Fichiers binaires supprimés.
 
