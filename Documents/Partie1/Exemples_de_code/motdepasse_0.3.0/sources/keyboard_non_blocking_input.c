@@ -28,7 +28,7 @@ int main(void)
 
   int c = 0;
 
-  fprintf( stdout, "Pour quitter, appuyer sur la touche échap (ESC) \n\n");
+  fprintf( stdout, "\nPour quitter, appuyer sur la touche échap (ESC) \n\n");
 
   while (false == bQuit)
   {
