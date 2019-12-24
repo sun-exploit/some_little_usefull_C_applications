@@ -24,34 +24,34 @@
 
 int main(void)
 {
-  bool bQuit = false;
+    bool bQuit = false;
 
-  int c = 0;
+    int c = 0;
 
-  fprintf( stdout, "\nPour quitter, appuyer sur la touche échap (ESC) \n\n");
+    fprintf( stdout, "\nPour quitter, appuyer sur la touche échap (ESC) \n\n");
 
-  while (false == bQuit)
-  {
-    do
+    while (false == bQuit)
     {
-        c = 0;
-        c = (int)getch();
+        do
+        {
+            c = 0;
+            c = (int)getch();
+        }
+        while ((c < CMIN) || (c > CMAX));
+
+        fprintf( stdout, "Caractère saisi : %c \n", c);
+        fprintf( stdout, "Valeur hexadécimale : 0x%X \n", c);
+        fprintf( stdout, "Valeur décimale : %d \n\n", c);
+
+        switch (c)
+        {
+            case CHAR_ESC:
+                bQuit = true;
+            break;
+
+            default:
+            break;
+        }
     }
-    while ((c < CMIN) || (c > CMAX));
-
-    fprintf( stdout, "Caractère saisi : %c \n", c);
-    fprintf( stdout, "Valeur hexadécimale : 0x%X \n", c);
-    fprintf( stdout, "Valeur décimale : %d \n\n", c);
-
-    switch (c)
-    {
-        case CHAR_ESC:
-            bQuit = true;
-        break;
-
-        default:
-        break;
-    }
-  }
-  return EXIT_SUCCESS;
+    return EXIT_SUCCESS;
 }
