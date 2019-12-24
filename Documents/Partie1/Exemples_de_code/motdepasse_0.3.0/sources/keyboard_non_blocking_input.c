@@ -27,7 +27,7 @@ int main(void)
     bool bQuit = false;
     int c = 0;
 
-    fprintf( stdout, " \n");
+    fprintf( stdout, "\nAppuyer sur une touche, ou appuyer sur la touche échap (ESC) pour quitter\n\n");
 
     while (false == bQuit)
     {
@@ -40,7 +40,7 @@ int main(void)
 
         fprintf( stdout, "Caractère saisi : %c \n", c);
         fprintf( stdout, "Valeur hexadécimale : 0x%X \n", c);
-        fprintf( stdout, "Valeur décimale : %d \n\n", c);
+        fprintf( stdout, "Valeur décimale : %d \n", c);
 
         fprintf( stdout, "\nAppuyer sur une touche, ou appuyer sur la touche échap (ESC) pour quitter\n\n");
 
