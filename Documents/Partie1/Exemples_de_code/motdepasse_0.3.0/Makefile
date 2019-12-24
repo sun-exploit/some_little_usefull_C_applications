@@ -42,8 +42,7 @@ TO_BE_ZIPPED = \
 TO_BE_ZIPPED_BINARIES = \
     ${BUILD_DIR}
 
-
-all : $(OUTBIN_ALL)
+all : clean $(OUTBIN_ALL)
 
 $(OUTBIN) : $(OBJS)
 	$(CC) $(CFLAGS) ${GCC_SECURITY_FLAGS} $(INCLUDE_DIR) -o $@ $(DEPS)  $(LD_FLAGS)
