@@ -4,69 +4,59 @@
 
 
 #include <stdio.h>
-/* rien */
-/*#include <iostream>*/
-
+#include <stdlib.h>
 #include <termios.h>
 #include <linux/fd.h>
+#include <stdbool.h>
 
 /* D'après POSIX.1-2001 */
-/* #include <sys/select.h> */
 
 /* autres implémentations */
 #include <sys/time.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include "getch.h"
 
-char getch()
+#define CMIN 1
+#define CMAX 255
+
+#define CHAR_PLUS  0x2B
+#define CHAR_MINUS 0x2D
+#define CHAR_Q  0x51
+#define CHAR_q  0x71
+
+
+int main(void)
 {
-    fd_set set;
-    struct timeval timeout;
-    int rv;
-    char buff = 0;
-    int len = 1;
-    int filedesc = 0;
-    FD_ZERO(&set);
-    FD_SET(filedesc, &set);
+  bool bQuit = false;
 
-    timeout.tv_sec = 0;
-    timeout.tv_usec = 1000;
-    rv = select(filedesc + 1, &set, NULL, NULL, &timeout);
-    struct termios old = {0};
-    tcgetattr(filedesc, &old);
-    old.c_lflag &= ~ICANON;
-    old.c_lflag &= ~ECHO;
-    old.c_cc[VMIN] = 1;
-    old.c_cc[VTIME] = 0;
+  int c = 0;
 
-    tcsetattr(filedesc, TCSANOW, &old);
+  fprintf( stdout, "Appuyer sur q ou Q pour quitter \n");
 
-    if(rv != -1)
-    {
-      int anErr = read(filedesc, &buff, len );
-
-      if (anErr < 0)
-        fprintf(stdout, "read issue");
-    }
-
-    old.c_lflag |= ICANON;
-    old.c_lflag |= ECHO;
-
-    tcsetattr(filedesc, TCSADRAIN, &old);
-
-    return (buff);
-}
-
-int main(int argc, char **argv)
-{
-  char c = 0;
-  while (c != 27) /*esc */
+  while (false == bQuit)
   {
-    char c = 0;
-    /* FIXME : enter only ascii values e.g. while ( !( (c > cmin1) && (c< cmax1))  ||  ( ... )) */
-    c=getch();
-    fprintf( stdout, "Valeur décimale du Caractère entré : %c \n", c);
-    fprintf( stdout, "Code ascii du caractère entré : %X \n", c);
+    do
+    {
+        c = 0;
+        c = (int)getch();
+    }
+    while ((c < CMIN) || (c > CMAX));
+
+    fprintf( stdout, "Caractère saisi : %c \n", c);
+    fprintf( stdout, "Valeur hexadécimale du caractère entré : %X \n", c);
+    fprintf( stdout, "Valeur décimale du caractère entré : %d \n\n", c);
+
+    switch (c)
+    {
+        case CHAR_Q:
+        case CHAR_q:
+            bQuit = true;
+          break;
+
+        default:
+          break;
+    }
   }
-  return 0;
+  return EXIT_SUCCESS;
 }
