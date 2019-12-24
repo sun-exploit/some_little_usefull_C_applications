@@ -40,8 +40,8 @@ int main(void)
     while ((c < CMIN) || (c > CMAX));
 
     fprintf( stdout, "Caractère saisi : %c \n", c);
-    fprintf( stdout, "Valeur hexadécimale du caractère entré : %X \n", c);
-    fprintf( stdout, "Valeur décimale du caractère entré : %d \n\n", c);
+    fprintf( stdout, "Valeur hexadécimale : 0x%X \n", c);
+    fprintf( stdout, "Valeur décimale : %d \n\n", c);
 
     switch (c)
     {
