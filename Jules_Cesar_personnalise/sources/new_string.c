@@ -94,6 +94,8 @@ int create_modified_string(char * chaine_a_chiffrer, char * chaine_chiffree, int
 #ifdef DEBUG
         fprintf(stdout, "chaine_a_chiffrer[%d] = %c\n" , i, chaine_a_chiffrer[i]);
         fprintf(stdout, "chaine_chiffree[%d] = %c\n" , i, chaine_chiffree[i]);
+        fprintf(stdout, "Valeur décimale de chaine_chiffree[%d] = %d\n" , i, chaine_chiffree[i]);
+        fprintf(stdout, "Valeur hexadécimale de chaine_chiffree[%d] = %X\n" , i, chaine_chiffree[i]);
 #endif
     }
     return EXIT_SUCCESS;
@@ -102,10 +104,11 @@ int create_modified_string(char * chaine_a_chiffrer, char * chaine_chiffree, int
 
 int refresh_screen(char chaine_a_chiffrer[], char chaine_chiffree[], int * p_length, int * p_offset)
 {
+#ifndef DEBUG
     efface_ecran();
-
+#endif
     fprintf(stdout, "\nChaine de caractère saisie :  %s \n", chaine_a_chiffrer);
-    fprintf(stdout, "\nValeur du décalage :  %hd \n", *p_offset);
+    fprintf(stdout, "\nValeur du décalage :  %hd \n\n", *p_offset);
 
     int anErr =  create_modified_string(chaine_a_chiffrer, chaine_chiffree, p_length, p_offset);
 
