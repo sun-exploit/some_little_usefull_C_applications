@@ -38,12 +38,13 @@ int new_string(char * sString, char * sNewString, int * p_length, int * p_offset
 
     int count = 0;
 
-    while ((sString[count] != '\0') && (count< STRING_SIZE_MAX))
+    while ((sString[count] != '\0') && (count < STRING_SIZE_MAX))
     {
         count++;
     }
 
     *p_length = count;
+
 #ifdef DEBUG
     fprintf(stdout, "length = %d \n", *p_length);
     getchar();
@@ -57,6 +58,8 @@ int new_string(char * sString, char * sNewString, int * p_length, int * p_offset
 int create_modified_string(char * chaine_a_chiffrer, char * chaine_chiffree, int * p_length, int * p_offset)
 {
     int i = 0;
+//!!
+    clear_string(chaine_chiffree);
 
 #ifdef DEBUG
     fprintf(stdout, "*p_length contient : %d \n", *p_length);
