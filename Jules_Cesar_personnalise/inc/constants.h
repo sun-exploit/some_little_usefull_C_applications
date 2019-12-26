@@ -11,10 +11,12 @@
 #define CMIN 1
 #define CMAX 255
 
-#define CHAR_ESC 27
-#define CHAR_SHARP 35
+#define CHAR_ESC       27
+#define CHAR_SHARP     35
 
-#define CHAR_PLUS 0x2B
-#define CHAR_MINUS 0x2D
+#define CHAR_PLUS      0x2B
+#define CHAR_MINUS     0x2D
+
+#define CHAR_BACKSPACE 0x7F
 
 #endif /* __CONSTANTS__H__ */
