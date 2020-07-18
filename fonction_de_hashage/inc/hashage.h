@@ -18,14 +18,14 @@ typedef struct item {
   struct item *next;
 } HASH;
 
-int getHashValue ( HASH *, char []);
+int getHashValue (HASH *, char []);
 
 HASH * initHash (void);
 
 void deleteHashKey (HASH * , char [] );
-void deleteHashKey (HASH *, char [] );
-void setHashValue (HASH *, char [], int);
-void destroyHash (HASH *);
+void setHashValue  (HASH *, char [], int);
+void destroyHash   (HASH *);
+
 void display(void);
 
 bool b_IsHashKey (HASH *, char [] );
