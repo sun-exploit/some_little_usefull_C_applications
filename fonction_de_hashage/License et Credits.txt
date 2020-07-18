@@ -1,0 +1,21 @@
+/* Auteur:  Eric Bachard  / 17 novembre 2014
+ * Ce document est sous Licence GPL v2
+ * voir : http://www.gnu.org/licenses/gpl-2.0.html
+ */
+
+Programme créé en 2006 (d'après TD LO22)
+
+Dernieres modifications : Eric Bachard 17 nov 2014 
+- creation Makefile
+- séparation code en main.c / menu.c / hashage.c et display.c
+- ajout de constantes pour les entrées de menu
+- ajout switch pour le menu
+- ajout .h
+- ...
+
+TODO :
+- vérifier que le programme fonctionne comme attendu (inversion clé / valeur ?)
+- tester avec des chaînes de caractère plus longues
+- fonctionement en pile LIFO ? (à vérifier)
+- ... à continuer
+- ajouter le travail à faire avec le débogueur (gdb)
