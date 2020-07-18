@@ -15,10 +15,8 @@ HASH *my_hash_table = NULL;
 
 int main (void)
 {
-#ifdef DEBUG
-  fprintf(stderr, "Fonction en cours d'exécution : %s \n", __func__ );
-#endif
   my_hash_table = initHash();
   menu(false);
+
   return EXIT_SUCCESS;
 }
