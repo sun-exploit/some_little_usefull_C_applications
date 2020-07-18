@@ -1,274 +1,451 @@
-diff --git a/Documents/Partie1/TD/test_memoire_utilisateur/rand_init b/Documents/Partie1/TD/test_memoire_utilisateur/rand_init
-deleted file mode 100755
-index 46696a0..0000000
-Binary files a/Documents/Partie1/TD/test_memoire_utilisateur/rand_init and /dev/null differ
-diff --git a/Exemples_de_projets/Oss_Sans_Baguette_0.9.0/Makefile-Linux b/Exemples_de_projets/Oss_Sans_Baguette_0.9.0/Makefile-Linux
-index c6ffeb3..703f86c 100644
---- a/Exemples_de_projets/Oss_Sans_Baguette_0.9.0/Makefile-Linux
-+++ b/Exemples_de_projets/Oss_Sans_Baguette_0.9.0/Makefile-Linux
-@@ -29,9 +29,9 @@ SDL_FLAGS =
- # use this when building graphical applications
- # choose only ONE ot them !
- # SDL 1.x flags
--SDL_FLAGS = -lSDL -lSDL_image -lSDL_mixer -lSDL_ttf $(sdl-config --static-libs)
-+#SDL_FLAGS = -lSDL -lSDL_image -lSDL_mixer -lSDL_ttf $(sdl-config --static-libs)
- # SDL2 flags
--#SDL_FLAGS = -DUSE_SDL2 -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL_ttf $(sdl2-config --static-libs)
-+SDL_FLAGS = -DUSE_SDL2 -lSDL2 -lSDL2_image -lSDL2_mixer $(sdl2-config --static-libs)
- 
- LD_FLAGS = -lm ${SDL_FLAGS}
- 
-diff --git a/Jules_Cesar_personnalise/Makefile b/Jules_Cesar_personnalise/Makefile
-index 02a6e38..4503a56 100644
---- a/Jules_Cesar_personnalise/Makefile
-+++ b/Jules_Cesar_personnalise/Makefile
-@@ -6,7 +6,7 @@
- CURRENT_DATE =  `date "+20%y-%m-%d"`
- BUILD_DIR = build
- VERSION_MAJOR = 1
--VERSION_MINOR = 0
-+VERSION_MINOR = 1
- # comment me for exact milestones
- #VERSION_MICRO = _devel_${CURRENT_DATE}
- VERSION = ${VERSION_MAJOR}.${VERSION_MINOR}${VERSION_MICRO}
 diff --git a/fonction_de_hashage/sources/hashage.c b/fonction_de_hashage/sources/hashage.c
-index 0dfb075..535b5a1 100644
+index 3c306d8..d79bceb 100644
 --- a/fonction_de_hashage/sources/hashage.c
 +++ b/fonction_de_hashage/sources/hashage.c
-@@ -1,4 +1,4 @@
--/* Copyright  Eric Bachard  / 17 novembre 2014
-+/* Auteur:  Eric Bachard  / 17 novembre 2014
-  * Ce document est sous Licence GPL v2
-  * voir : http://www.gnu.org/licenses/gpl-2.0.html
-  */
-@@ -10,12 +10,14 @@
- #include "hashage.h"
- 
- /*
--    HASH          :    LIFO type
--    initHash      :    init
--    setHashValue  :    push
--    getHashValue  :    get
--    deleteHashKey :    pop
--    destroyHash   :    delete
-+
-+HASH          :    LIFO type
-+initHash      :    init
-+setHashValue  :    push
-+getHashValue  :    get
-+deleteHashKey :    pop
-+destroyHash   :    delete
-+
- */
- 
- // ask yourself why C++ wins ... 
-@@ -28,7 +30,7 @@ extern HASH * my_hash_table;
- HASH *initHash (void)
- {
+@@ -42,7 +42,6 @@ HASH *initHash (void)
  #ifdef DEBUG
--    fprintf(stderr, "Fonction en cours d'exécution : %s \n", __func__ );
-+  fprintf(stderr, "Fonction en cours d'exécution : %s \n", __func__ );
+     fprintf(stderr, "Incrémentation de refcount. Nouvelle valeur =  %d \n", refcount );
  #endif
+-
+     if(my_hash_table == NULL)
+         exit(EXIT_FAILURE);
  
-     // Declaration d'un pointeur vers une structure de type HASH
-@@ -55,22 +57,22 @@ HASH *initHash (void)
+@@ -54,20 +53,19 @@ HASH *initHash (void)
+ }
  
  
- 
--void destroyHash (HASH *p_hash_table)
-+void destroyHash (HASH *my_hash_table)
+-
+-void destroyHash (HASH * my_hash_table)
++void destroyHash (HASH * p_hash_table)
  {
  #ifdef DEBUG
      fprintf(stderr, "Fonction en cours d'exécution : %s \n", __func__ );
  #endif
      HASH * my_hash_table_next;
  
--    my_hash_table_next = p_hash_table->next;
-+    my_hash_table_next = my_hash_table->next;
+-    my_hash_table_next = my_hash_table->next;
++    my_hash_table_next = p_hash_table->next;
  
      /* delete the element  H is pointing to */
--    if ((p_hash_table != NULL ) && (refcount > 0))
-+    if ((my_hash_table != NULL ) && (refcount > 0))
+-    if ((my_hash_table != NULL ) && (refcount > 0))
++    if ((p_hash_table != NULL ) && (refcount > 0))
      {
--        free(p_hash_table);
--        refcount--;
-+      free(my_hash_table);
-+      refcount--;
+-      free(my_hash_table);
++      free(p_hash_table);
+       refcount--;
  #ifdef DEBUG
--        fprintf(stderr, "Décrémentation de refcount. Nouvelle valeur =  %d \n", refcount );
-+      fprintf(stderr, "Décrémentation de refcount. Nouvelle valeur =  %d \n", refcount );
- #endif
-     }
- 
-@@ -81,12 +83,12 @@ void destroyHash (HASH *p_hash_table)
+       fprintf(stderr, "Décrémentation de refcount. Nouvelle valeur =  %d \n", refcount );
+@@ -81,12 +79,12 @@ void destroyHash (HASH * my_hash_table)
  }
  
  
--void setHashValue (HASH * p_hash_table, char key[20], int value)
-+void setHashValue (HASH *my_hash_table, char key[20], int value)
+-void setHashValue (HASH * my_hash_table, char key[20], int value)
++void setHashValue (HASH * p_hash_table, char key[20], int value)
  {
  #ifdef DEBUG
      fprintf(stderr, "Fonction en cours d'exécution : %s \n", __func__ );
  #endif
--    unsigned int i;
-+    int i;
+-    int i;
++    unsigned int i;
  
      /*
          Tant que l'on est pas arrive au bout de la table de hashage
-@@ -95,60 +97,61 @@ void setHashValue (HASH * p_hash_table, char key[20], int value)
+@@ -95,60 +93,60 @@ void setHashValue (HASH * my_hash_table, char key[20], int value)
      */
  
  
--    while((p_hash_table->next != NULL) && (strcmp (p_hash_table->key , key) != 0))
-+    while( (my_hash_table->next != NULL) 
-+         && (strcmp (my_hash_table->key , key) != 0) )
+-    while((my_hash_table->next != NULL) && (strcmp (my_hash_table->key , key) != 0))
++    while((p_hash_table->next != NULL) && (strcmp (p_hash_table->key , key) != 0))
      {
--        p_hash_table = p_hash_table->next;
-+        my_hash_table = my_hash_table->next;
+-        my_hash_table = my_hash_table->next;
++        p_hash_table = p_hash_table->next;
      }
  
      /* attention piège : strcmp compare 2 chaines de caractères et renvoie 0 ssi les 2 chaines sont identiques */
  
--    if( strcmp (p_hash_table->key, key) == 0 )
--        p_hash_table->value = value;
-+    if( strcmp (my_hash_table->key, key) == 0 )
-+        my_hash_table->value = value;
+-    if( strcmp (my_hash_table->key, key) == 0 )
+-        my_hash_table->value = value;
++    if( strcmp (p_hash_table->key, key) == 0 )
++        p_hash_table->value = value;
      else
      {
--        p_hash_table->next = (HASH *)malloc(sizeof(HASH));
-+        my_hash_table->next = (HASH *)malloc(sizeof(HASH));
+-        my_hash_table->next = (HASH *)malloc(sizeof(HASH));
++        p_hash_table->next = (HASH *)malloc(sizeof(HASH));
  
--        if(p_hash_table->next == NULL)
-+        if(my_hash_table->next == NULL)
+-        if(my_hash_table->next == NULL)
++        if(p_hash_table->next == NULL)
              exit(EXIT_FAILURE);
  
--        p_hash_table = p_hash_table->next;
-+        my_hash_table = my_hash_table->next;
+-        my_hash_table = my_hash_table->next;
++        p_hash_table = p_hash_table->next;
  
-         for ( i=0; i<=strlen(key); i=i+1 )
+-        for ( i=0; i<=strlen(key); i=i+1 )
++        for (i=0; i<=strlen(key); i++)
          {
--            p_hash_table->key[i]=key[i];
-+            my_hash_table->key[i]=key[i];
+-            my_hash_table->key[i]=key[i];
++            p_hash_table->key[i]=key[i];
          }
  
--        p_hash_table->value = value;
--        p_hash_table->next = NULL;
-+        my_hash_table->value = value;
-+        my_hash_table->next = NULL;
+-        my_hash_table->value = value;
+-        my_hash_table->next = NULL;
++        p_hash_table->value = value;
++        p_hash_table->next = NULL;
      }
  }
  
  
--int getHashValue ( HASH * p_hash_table, char key[20] )
-+int getHashValue ( HASH *my_hash_table, char key[20] )
+-int getHashValue (HASH * my_hash_table, char key[20])
++int getHashValue (HASH * p_hash_table, char key[20])
  {
  
  #ifdef DEBUG
      fprintf(stderr, "Fonction en cours d'exécution : %s \n", __func__ );
  #endif
  
--    while(strcmp( p_hash_table->key , key) != 0)
-+    while(strcmp( my_hash_table->key , key) != 0)
+-    while(strcmp( my_hash_table->key , key) != 0)
++    while(strcmp( p_hash_table->key , key) != 0)
      {
--        p_hash_table = p_hash_table->next;
-+        my_hash_table = my_hash_table->next;
+-        my_hash_table = my_hash_table->next;
++        p_hash_table = p_hash_table->next;
      }
  
--    return p_hash_table->value;
-+    return my_hash_table->value;
+-    return my_hash_table->value;
++    return p_hash_table->value;
  }
  
--bool b_IsHashKey (HASH * p_hash_table, char key[20] )
-+bool b_IsHashKey (HASH *my_hash_table, char key[20] )
+-bool b_IsHashKey (HASH * my_hash_table, char key[20])
++bool b_IsHashKey (HASH * p_hash_table, char key[20])
  {
      bool toReturn = false;
  
--    while ( (p_hash_table != NULL) && ( strcmp ( p_hash_table->key , key ) != 0 ) )
-+    while ( (my_hash_table != NULL) && ( strcmp ( my_hash_table->key , key ) != 0 ) )
+-    while ( (my_hash_table != NULL) && ( strcmp ( my_hash_table->key , key ) != 0 ) )
++    while ((p_hash_table != NULL) && (strcmp(p_hash_table->key, key) != 0))
      {
--        p_hash_table = p_hash_table->next;
-+        my_hash_table = my_hash_table->next;
+-        my_hash_table = my_hash_table->next;
++        p_hash_table = p_hash_table->next;
      }
  
--    if ( (p_hash_table != NULL) && (strcmp(p_hash_table->key , key) == 0 ) )
-+    if ( (my_hash_table != NULL) && (strcmp(my_hash_table->key , key) == 0 ) )
+-    if ( (my_hash_table != NULL) && (strcmp(my_hash_table->key , key) == 0 ) )
++    if ((p_hash_table != NULL) && (strcmp(p_hash_table->key, key) == 0))
          return true;
      else
        toReturn =false;
-@@ -156,27 +159,26 @@ bool b_IsHashKey (HASH * p_hash_table, char key[20] )
+@@ -156,30 +154,29 @@ bool b_IsHashKey (HASH * my_hash_table, char key[20])
      return toReturn;
  }
  
--void deleteHashKey (HASH * p_hash_table, char key[20] )
-+void deleteHashKey (HASH *my_hash_table, char key[20] )
+-void deleteHashKey (HASH * my_hash_table, char key[20] )
++void deleteHashKey (HASH * p_hash_table, char key[20] )
  {
  #ifdef DEBUG
--    fprintf(stderr, "Fonction en cours d'exécution : %s \n", __func__ );
-+  fprintf(stderr, "Fonction en cours d'exécution : %s \n", __func__ );
+     fprintf(stderr, "Fonction en cours d'exécution : %s \n", __func__ );
  #endif
--    HASH *hash_to_delete;
-+  HASH *hash_to_delete;
+     HASH *hash_to_delete;
  
--    while (strcmp ( p_hash_table->next->key , key ) != 0  )
--    {
--        p_hash_table = p_hash_table->next;
--    }
-+  while (strcmp ( my_hash_table->next->key , key ) != 0  )
-+    my_hash_table = my_hash_table->next;
+-    while (strcmp ( my_hash_table->next->key , key ) != 0  )
++    while (strcmp (p_hash_table->next->key, key ) != 0)
+     {
+-        my_hash_table = my_hash_table->next;
++        p_hash_table = p_hash_table->next;
+     }
  
--    /*Le pointeur hash_to_delete va pointer vers l'element a supprimer.
--        Il ne faut pas oublier de lier l'element precedent de
--        N avec l'element suivant de N pour ne pas casser la liste chainée. */
--    hash_to_delete = p_hash_table->next;
-+  /*Le pointeur hash_to_delete va pointer vers l'element a supprimer.
-+    Il ne faut pas oublier de lier l'element precedent de
-+    N avec l'element suivant de N pour ne pas casser la
-+    liste chainée. */
-+  hash_to_delete = my_hash_table->next;
+     /*
+-        Le pointeur hash_to_delete va pointer vers l'element a supprimer.
+-        Il ne faut pas oublier de lier l'element precedent de N avec l'element suivant de N 
+-        pour ne pas casser la liste chainée.
++        Le pointeur hash_to_delete va pointer vers l'element a supprimer. Il ne faut pas oublier
++        de lier l'element precedent de N avec l'element suivant de N pour ne pas casser la liste chainée.
+     */
  
--    if (p_hash_table->next->next != NULL)
--        p_hash_table->next = p_hash_table->next->next;
-+  if (my_hash_table->next->next != NULL)
-+    my_hash_table->next = my_hash_table->next->next;
+-    hash_to_delete = my_hash_table->next;
++    hash_to_delete = p_hash_table->next;
+ 
+-    if (my_hash_table->next->next != NULL)
+-        my_hash_table->next = my_hash_table->next->next;
++    if (p_hash_table->next->next != NULL)
++        p_hash_table->next = p_hash_table->next->next;
  
 -    if (( hash_to_delete != NULL ) && ( refcount > 0 ))
--        free(hash_to_delete);
-+  if (( hash_to_delete != NULL ) && ( refcount > 0 ))
-+    free(hash_to_delete);
++    if (( hash_to_delete != NULL ) && (refcount > 0))
+         free(hash_to_delete);
  }
  
-diff --git a/utime/sources/microtime.c b/utime/sources/microtime.c
-index a474d42..2052d36 100644
---- a/utime/sources/microtime.c
-+++ b/utime/sources/microtime.c
-@@ -16,9 +16,9 @@
- static bool b_once = true;
- 
- /* C structure containing a given time in microsecond, and more */
--struct timeval tv;
-+static struct timeval tv;
- 
--struct timespec tspec;
-+static struct timespec tspec;
- 
- int main (void)
- {
-@@ -26,7 +26,8 @@ int main (void)
-   int j = 0;
-   long int utime1 = 0;
-   long int utime2 = 0;
--  for (i=0 ; i <4 ; i++)
-+
-+  for (i=0 ; i <40 ; i++)
-   {
-       clock_gettime(CLOCK_REALTIME, &tspec);
-       fprintf(stdout, "Time with tspec : %ld \n", tspec.tv_nsec);
-@@ -39,7 +40,7 @@ int main (void)
-       int count = 1;
-       for (j=0; j <4 ;j++)
-       {
--        fprintf (stdout, "Tirage %d : %d \n",count, (rand()%10 +1));
-+        fprintf (stdout, "Tirage %d : %d \n",count, (rand()%100 +1));
-         count++;
-       }
- 
+diff --git a/fonction_de_hashage/warnings_free.diff b/fonction_de_hashage/warnings_free.diff
+index 7d521a5..3392917 100644
+--- a/fonction_de_hashage/warnings_free.diff
++++ b/fonction_de_hashage/warnings_free.diff
+@@ -1,274 +0,0 @@
+-diff --git a/Documents/Partie1/TD/test_memoire_utilisateur/rand_init b/Documents/Partie1/TD/test_memoire_utilisateur/rand_init
+-deleted file mode 100755
+-index 46696a0..0000000
+-Binary files a/Documents/Partie1/TD/test_memoire_utilisateur/rand_init and /dev/null differ
+-diff --git a/Exemples_de_projets/Oss_Sans_Baguette_0.9.0/Makefile-Linux b/Exemples_de_projets/Oss_Sans_Baguette_0.9.0/Makefile-Linux
+-index c6ffeb3..703f86c 100644
+---- a/Exemples_de_projets/Oss_Sans_Baguette_0.9.0/Makefile-Linux
+-+++ b/Exemples_de_projets/Oss_Sans_Baguette_0.9.0/Makefile-Linux
+-@@ -29,9 +29,9 @@ SDL_FLAGS =
+- # use this when building graphical applications
+- # choose only ONE ot them !
+- # SDL 1.x flags
+--SDL_FLAGS = -lSDL -lSDL_image -lSDL_mixer -lSDL_ttf $(sdl-config --static-libs)
+-+#SDL_FLAGS = -lSDL -lSDL_image -lSDL_mixer -lSDL_ttf $(sdl-config --static-libs)
+- # SDL2 flags
+--#SDL_FLAGS = -DUSE_SDL2 -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL_ttf $(sdl2-config --static-libs)
+-+SDL_FLAGS = -DUSE_SDL2 -lSDL2 -lSDL2_image -lSDL2_mixer $(sdl2-config --static-libs)
+- 
+- LD_FLAGS = -lm ${SDL_FLAGS}
+- 
+-diff --git a/Jules_Cesar_personnalise/Makefile b/Jules_Cesar_personnalise/Makefile
+-index 02a6e38..4503a56 100644
+---- a/Jules_Cesar_personnalise/Makefile
+-+++ b/Jules_Cesar_personnalise/Makefile
+-@@ -6,7 +6,7 @@
+- CURRENT_DATE =  `date "+20%y-%m-%d"`
+- BUILD_DIR = build
+- VERSION_MAJOR = 1
+--VERSION_MINOR = 0
+-+VERSION_MINOR = 1
+- # comment me for exact milestones
+- #VERSION_MICRO = _devel_${CURRENT_DATE}
+- VERSION = ${VERSION_MAJOR}.${VERSION_MINOR}${VERSION_MICRO}
+-diff --git a/fonction_de_hashage/sources/hashage.c b/fonction_de_hashage/sources/hashage.c
+-index 0dfb075..535b5a1 100644
+---- a/fonction_de_hashage/sources/hashage.c
+-+++ b/fonction_de_hashage/sources/hashage.c
+-@@ -1,4 +1,4 @@
+--/* Copyright  Eric Bachard  / 17 novembre 2014
+-+/* Auteur:  Eric Bachard  / 17 novembre 2014
+-  * Ce document est sous Licence GPL v2
+-  * voir : http://www.gnu.org/licenses/gpl-2.0.html
+-  */
+-@@ -10,12 +10,14 @@
+- #include "hashage.h"
+- 
+- /*
+--    HASH          :    LIFO type
+--    initHash      :    init
+--    setHashValue  :    push
+--    getHashValue  :    get
+--    deleteHashKey :    pop
+--    destroyHash   :    delete
+-+
+-+HASH          :    LIFO type
+-+initHash      :    init
+-+setHashValue  :    push
+-+getHashValue  :    get
+-+deleteHashKey :    pop
+-+destroyHash   :    delete
+-+
+- */
+- 
+- // ask yourself why C++ wins ... 
+-@@ -28,7 +30,7 @@ extern HASH * my_hash_table;
+- HASH *initHash (void)
+- {
+- #ifdef DEBUG
+--    fprintf(stderr, "Fonction en cours d'exécution : %s \n", __func__ );
+-+  fprintf(stderr, "Fonction en cours d'exécution : %s \n", __func__ );
+- #endif
+- 
+-     // Declaration d'un pointeur vers une structure de type HASH
+-@@ -55,22 +57,22 @@ HASH *initHash (void)
+- 
+- 
+- 
+--void destroyHash (HASH *p_hash_table)
+-+void destroyHash (HASH *my_hash_table)
+- {
+- #ifdef DEBUG
+-     fprintf(stderr, "Fonction en cours d'exécution : %s \n", __func__ );
+- #endif
+-     HASH * my_hash_table_next;
+- 
+--    my_hash_table_next = p_hash_table->next;
+-+    my_hash_table_next = my_hash_table->next;
+- 
+-     /* delete the element  H is pointing to */
+--    if ((p_hash_table != NULL ) && (refcount > 0))
+-+    if ((my_hash_table != NULL ) && (refcount > 0))
+-     {
+--        free(p_hash_table);
+--        refcount--;
+-+      free(my_hash_table);
+-+      refcount--;
+- #ifdef DEBUG
+--        fprintf(stderr, "Décrémentation de refcount. Nouvelle valeur =  %d \n", refcount );
+-+      fprintf(stderr, "Décrémentation de refcount. Nouvelle valeur =  %d \n", refcount );
+- #endif
+-     }
+- 
+-@@ -81,12 +83,12 @@ void destroyHash (HASH *p_hash_table)
+- }
+- 
+- 
+--void setHashValue (HASH * p_hash_table, char key[20], int value)
+-+void setHashValue (HASH *my_hash_table, char key[20], int value)
+- {
+- #ifdef DEBUG
+-     fprintf(stderr, "Fonction en cours d'exécution : %s \n", __func__ );
+- #endif
+--    unsigned int i;
+-+    int i;
+- 
+-     /*
+-         Tant que l'on est pas arrive au bout de la table de hashage
+-@@ -95,60 +97,61 @@ void setHashValue (HASH * p_hash_table, char key[20], int value)
+-     */
+- 
+- 
+--    while((p_hash_table->next != NULL) && (strcmp (p_hash_table->key , key) != 0))
+-+    while( (my_hash_table->next != NULL) 
+-+         && (strcmp (my_hash_table->key , key) != 0) )
+-     {
+--        p_hash_table = p_hash_table->next;
+-+        my_hash_table = my_hash_table->next;
+-     }
+- 
+-     /* attention piège : strcmp compare 2 chaines de caractères et renvoie 0 ssi les 2 chaines sont identiques */
+- 
+--    if( strcmp (p_hash_table->key, key) == 0 )
+--        p_hash_table->value = value;
+-+    if( strcmp (my_hash_table->key, key) == 0 )
+-+        my_hash_table->value = value;
+-     else
+-     {
+--        p_hash_table->next = (HASH *)malloc(sizeof(HASH));
+-+        my_hash_table->next = (HASH *)malloc(sizeof(HASH));
+- 
+--        if(p_hash_table->next == NULL)
+-+        if(my_hash_table->next == NULL)
+-             exit(EXIT_FAILURE);
+- 
+--        p_hash_table = p_hash_table->next;
+-+        my_hash_table = my_hash_table->next;
+- 
+-         for ( i=0; i<=strlen(key); i=i+1 )
+-         {
+--            p_hash_table->key[i]=key[i];
+-+            my_hash_table->key[i]=key[i];
+-         }
+- 
+--        p_hash_table->value = value;
+--        p_hash_table->next = NULL;
+-+        my_hash_table->value = value;
+-+        my_hash_table->next = NULL;
+-     }
+- }
+- 
+- 
+--int getHashValue ( HASH * p_hash_table, char key[20] )
+-+int getHashValue ( HASH *my_hash_table, char key[20] )
+- {
+- 
+- #ifdef DEBUG
+-     fprintf(stderr, "Fonction en cours d'exécution : %s \n", __func__ );
+- #endif
+- 
+--    while(strcmp( p_hash_table->key , key) != 0)
+-+    while(strcmp( my_hash_table->key , key) != 0)
+-     {
+--        p_hash_table = p_hash_table->next;
+-+        my_hash_table = my_hash_table->next;
+-     }
+- 
+--    return p_hash_table->value;
+-+    return my_hash_table->value;
+- }
+- 
+--bool b_IsHashKey (HASH * p_hash_table, char key[20] )
+-+bool b_IsHashKey (HASH *my_hash_table, char key[20] )
+- {
+-     bool toReturn = false;
+- 
+--    while ( (p_hash_table != NULL) && ( strcmp ( p_hash_table->key , key ) != 0 ) )
+-+    while ( (my_hash_table != NULL) && ( strcmp ( my_hash_table->key , key ) != 0 ) )
+-     {
+--        p_hash_table = p_hash_table->next;
+-+        my_hash_table = my_hash_table->next;
+-     }
+- 
+--    if ( (p_hash_table != NULL) && (strcmp(p_hash_table->key , key) == 0 ) )
+-+    if ( (my_hash_table != NULL) && (strcmp(my_hash_table->key , key) == 0 ) )
+-         return true;
+-     else
+-       toReturn =false;
+-@@ -156,27 +159,26 @@ bool b_IsHashKey (HASH * p_hash_table, char key[20] )
+-     return toReturn;
+- }
+- 
+--void deleteHashKey (HASH * p_hash_table, char key[20] )
+-+void deleteHashKey (HASH *my_hash_table, char key[20] )
+- {
+- #ifdef DEBUG
+--    fprintf(stderr, "Fonction en cours d'exécution : %s \n", __func__ );
+-+  fprintf(stderr, "Fonction en cours d'exécution : %s \n", __func__ );
+- #endif
+--    HASH *hash_to_delete;
+-+  HASH *hash_to_delete;
+- 
+--    while (strcmp ( p_hash_table->next->key , key ) != 0  )
+--    {
+--        p_hash_table = p_hash_table->next;
+--    }
+-+  while (strcmp ( my_hash_table->next->key , key ) != 0  )
+-+    my_hash_table = my_hash_table->next;
+- 
+--    /*Le pointeur hash_to_delete va pointer vers l'element a supprimer.
+--        Il ne faut pas oublier de lier l'element precedent de
+--        N avec l'element suivant de N pour ne pas casser la liste chainée. */
+--    hash_to_delete = p_hash_table->next;
+-+  /*Le pointeur hash_to_delete va pointer vers l'element a supprimer.
+-+    Il ne faut pas oublier de lier l'element precedent de
+-+    N avec l'element suivant de N pour ne pas casser la
+-+    liste chainée. */
+-+  hash_to_delete = my_hash_table->next;
+- 
+--    if (p_hash_table->next->next != NULL)
+--        p_hash_table->next = p_hash_table->next->next;
+-+  if (my_hash_table->next->next != NULL)
+-+    my_hash_table->next = my_hash_table->next->next;
+- 
+--    if (( hash_to_delete != NULL ) && ( refcount > 0 ))
+--        free(hash_to_delete);
+-+  if (( hash_to_delete != NULL ) && ( refcount > 0 ))
+-+    free(hash_to_delete);
+- }
+- 
+-diff --git a/utime/sources/microtime.c b/utime/sources/microtime.c
+-index a474d42..2052d36 100644
+---- a/utime/sources/microtime.c
+-+++ b/utime/sources/microtime.c
+-@@ -16,9 +16,9 @@
+- static bool b_once = true;
+- 
+- /* C structure containing a given time in microsecond, and more */
+--struct timeval tv;
+-+static struct timeval tv;
+- 
+--struct timespec tspec;
+-+static struct timespec tspec;
+- 
+- int main (void)
+- {
+-@@ -26,7 +26,8 @@ int main (void)
+-   int j = 0;
+-   long int utime1 = 0;
+-   long int utime2 = 0;
+--  for (i=0 ; i <4 ; i++)
+-+
+-+  for (i=0 ; i <40 ; i++)
+-   {
+-       clock_gettime(CLOCK_REALTIME, &tspec);
+-       fprintf(stdout, "Time with tspec : %ld \n", tspec.tv_nsec);
+-@@ -39,7 +40,7 @@ int main (void)
+-       int count = 1;
+-       for (j=0; j <4 ;j++)
+-       {
+--        fprintf (stdout, "Tirage %d : %d \n",count, (rand()%10 +1));
+-+        fprintf (stdout, "Tirage %d : %d \n",count, (rand()%100 +1));
+-         count++;
+-       }
+- 
