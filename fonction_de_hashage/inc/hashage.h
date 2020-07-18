@@ -22,9 +22,14 @@ int getHashValue (HASH *, char []);
 
 HASH * initHash (void);
 
-void deleteHashKey (HASH * , char [] );
-void setHashValue  (HASH *, char [], int);
-void destroyHash   (HASH *);
+/* pop */
+void pop (HASH * , char [] );
+
+/* push */
+void push  (HASH *, char [], int);
+
+/*  null the table */
+void eraseTable (HASH *);
 
 void display(void);
 

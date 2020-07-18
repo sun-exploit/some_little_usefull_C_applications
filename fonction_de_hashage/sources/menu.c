@@ -7,6 +7,9 @@
 #include <stdbool.h>
 #include "menu.h"
 
+// FIXME : awfull implementation. test inside switch is bad design :-/
+
+
 void menu(bool b_Quit)
 {
 #ifdef DEBUG
@@ -20,7 +23,10 @@ void menu(bool b_Quit)
   while (false == b_Quit)
   {
     display();
+
+    // TODO : use saisie_nombre_entier_court()
     scanf ("%c", &choice);
+
     while (getchar() != '\n');
 
     switch (choice)
@@ -28,16 +34,22 @@ void menu(bool b_Quit)
       case HASH_AFFECT_VALUE_FOR_GIVEN_KEY:
       {
         fprintf(stdout, "Entrez la clé de l'élément à modifier/crée\n");
+
+        // TODO : utiliser saisie_chaine_de_caracteres
         scanf("%s",key);
+
         while (getchar() != '\n');
 #ifdef DEBUG
         fprintf(stderr, "key vaut : %s \n", key );
 #endif
         fprintf(stdout, "Entrez la valeur de l'élément\n");
+
+
+        // TODO : utiliser saisie_nombre_reel()
         scanf("%d",&val);
         while (getchar() != '\n');
 
-        setHashValue( my_hash_table, key, val);
+        push( my_hash_table, key, val);
 
         break;
       }
@@ -45,6 +57,8 @@ void menu(bool b_Quit)
       case HASH_RETURN_VALUE_FOR_GIVEN_KEY:
       {
         fprintf(stdout, "Entrez la clé de l'élément\n");
+
+        // TODO : utiliser saisie_chaine_de_caracteres
         scanf("%s",key);
         while (getchar() != '\n');
 
@@ -59,6 +73,8 @@ void menu(bool b_Quit)
       case HASH_SEARCH_A_KEY:
       {
         fprintf(stdout, "Entrez la clé de l'élément\n");
+
+        // TODO : utiliser saisie_chaine_de_caracteres
         scanf("%s",key);
 #ifdef DEBUG
         fprintf(stderr, "key vaut : %s \n", key );
@@ -76,6 +92,8 @@ void menu(bool b_Quit)
       case HASH_DELETE_ENTRY_FROM_GIVEN_KEY:
       {
         fprintf(stdout, "Entrez la clé de l'élément\n");
+
+        // TODO : utiliser saisie_chaine_de_caracteres
         scanf("%s",key);
         while (getchar() != '\n');
 
@@ -85,15 +103,15 @@ void menu(bool b_Quit)
         if (false == b_IsHashKey(my_hash_table,key))
           fprintf(stdout, "L'élément n'existe pas!\n");
         else
-          deleteHashKey(my_hash_table,key);
+          pop(my_hash_table,key);
 
         break;
       }
 
       case HASH_DELETE_TABLE:
       {
-        if (my_hash_table !=NULL)
-          destroyHash(my_hash_table);
+        if (my_hash_table != NULL)
+            eraseTable(my_hash_table);
 
         break;
       }
@@ -105,7 +123,7 @@ void menu(bool b_Quit)
         b_Quit = true;
 
         if(my_hash_table != NULL)
-          destroyHash(my_hash_table);
+          eraseTable(my_hash_table);
 
         break;
       }

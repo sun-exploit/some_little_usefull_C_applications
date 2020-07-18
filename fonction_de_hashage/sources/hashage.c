@@ -37,7 +37,7 @@ HASH *initHash (void)
     /* malloc => heap allocation */
     my_hash_table = (HASH *)malloc(sizeof(HASH));
 
-    refcount++;
+    //refcount++;
 
 #ifdef DEBUG
     fprintf(stderr, "Incrémentation de refcount. Nouvelle valeur =  %d \n", refcount );
@@ -53,7 +53,7 @@ HASH *initHash (void)
 }
 
 
-void destroyHash (HASH * p_hash_table)
+void eraseTable (HASH * p_hash_table)
 {
 #ifdef DEBUG
     fprintf(stderr, "Fonction en cours d'exécution : %s \n", __func__ );
@@ -63,7 +63,7 @@ void destroyHash (HASH * p_hash_table)
     my_hash_table_next = p_hash_table->next;
 
     /* delete the element  H is pointing to */
-    if ((p_hash_table != NULL ) && (refcount > 0))
+    if ((p_hash_table != NULL ) && (refcount > 1))
     {
       free(p_hash_table);
       refcount--;
@@ -75,11 +75,11 @@ void destroyHash (HASH * p_hash_table)
     // On rappelle la fonction avec pour argument le pointeur vers l'element suivant
 
     if(my_hash_table_next != NULL)
-        destroyHash (my_hash_table_next);
+        eraseTable (my_hash_table_next);
 }
 
 
-void setHashValue (HASH * p_hash_table, char key[20], int value)
+void push (HASH * p_hash_table, char key[20], int value)
 {
 #ifdef DEBUG
     fprintf(stderr, "Fonction en cours d'exécution : %s \n", __func__ );
@@ -115,6 +115,8 @@ void setHashValue (HASH * p_hash_table, char key[20], int value)
         {
             p_hash_table->key[i]=key[i];
         }
+
+        refcount++;
 
         p_hash_table->value = value;
         p_hash_table->next = NULL;
@@ -154,7 +156,7 @@ bool b_IsHashKey (HASH * p_hash_table, char key[20])
     return toReturn;
 }
 
-void deleteHashKey (HASH * p_hash_table, char key[20] )
+void pop (HASH * p_hash_table, char key[20] )
 {
 #ifdef DEBUG
     fprintf(stderr, "Fonction en cours d'exécution : %s \n", __func__ );
