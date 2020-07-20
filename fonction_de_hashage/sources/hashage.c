@@ -75,6 +75,8 @@ void push (HASH * p_hash_table, char key[20], int value)
 {
     unsigned int i;
 
+    HASH * p_backup = p_hash_table;
+
     /* attention piège : strcmp compare 2 chaines de caractères et renvoie 0 ssi les 2 chaines sont identiques */
 
     while((p_hash_table->next != NULL) && (strcmp (p_hash_table->key , key) != 0))
@@ -132,6 +134,9 @@ void push (HASH * p_hash_table, char key[20], int value)
         refcount++;
         print_refcount();
     }
+
+    // Il faut restaurer la valeur de départ pour la table
+    p_hash_table =  p_backup;
 }
 
 
