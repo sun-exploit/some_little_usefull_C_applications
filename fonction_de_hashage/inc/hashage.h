@@ -14,6 +14,10 @@ typedef struct item {
   char key[20];
   /*On suppose la valeur contenue est entiere*/
   int value;
+
+  /* dernier élément ?*/
+  bool b_isLast;
+
   /* pointeur sur l'element suivant */
   struct item *next;
 } HASH;
@@ -22,14 +26,17 @@ int getHashValue (HASH *, char []);
 
 HASH * initHash (void);
 
+/* deleteKey */
+void deleteKey (HASH * , char [] );
+
 /* pop */
-void pop (HASH * , char [] );
+void pop (HASH *);
 
 /* push */
 void push  (HASH *, char [], int);
 
 /*  null the table */
-void eraseTable (HASH *);
+void eraseTable (void);
 
 void display(void);
 

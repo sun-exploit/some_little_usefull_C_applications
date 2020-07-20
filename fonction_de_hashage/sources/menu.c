@@ -103,7 +103,7 @@ void menu(bool b_Quit)
                 if (false == b_IsHashKey(my_hash_table,key))
                     fprintf(stdout, "L'élément n'existe pas!\n");
                 else
-                    pop(my_hash_table,key);
+                    deleteKey(my_hash_table,key);
 
             }
             break;
@@ -111,8 +111,7 @@ void menu(bool b_Quit)
             case HASH_DELETE_TABLE:
             {
                 if (my_hash_table != NULL)
-                    eraseTable(my_hash_table);
-
+                    eraseTable();
             }
             break;
 
@@ -124,8 +123,7 @@ void menu(bool b_Quit)
                 b_Quit = true;
 
                 if(my_hash_table != NULL)
-                    eraseTable(my_hash_table);
-
+                    eraseTable();
             }
             break;
 
