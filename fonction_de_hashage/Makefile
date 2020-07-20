@@ -2,7 +2,7 @@
 # Eric Bachard / Novembre 2014
 # Sauf mention contraire, tout est place sous Licence GPL V2
 
-#CHASSE_AUX_BUGS=la_chasse_est_ouverte
+CHASSE_AUX_BUGS=la_chasse_est_ouverte
 
 CC = gcc
 C_STANDARD = -std=c99
@@ -43,4 +43,3 @@ ${FILENAME}${DEBUG_SUFFIX}: ${OBJS}
 
 clean:
 	${RM} *.o ${FILENAME} ${FILENAME}${DEBUG_SUFFIX}
-	${RM} -rf ${BUILD_DIR}/*.dSYM
