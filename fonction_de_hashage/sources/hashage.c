@@ -21,43 +21,45 @@
 // ask yourself why C++ wins ... 
 static int refcount = 0;
 
+#define DEBUG_LEVEL 3
+
 /* singleton */
 extern HASH * my_hash_table;
 
-
-HASH *initHash (void)
+static void print_refcount(void)
 {
-#ifdef DEBUG
-  fprintf(stderr, "Fonction en cours d'exécution : %s \n", __func__ );
+#if (DEBUG_LEVEL > 1)
+    fprintf(stdout, "refcount = %d \n", refcount);
 #endif
+}
 
+
+HASH * initHash (void)
+{
     // Declaration d'un pointeur vers une structure de type HASH
     // ATTENTION : le pointeur est initialisé a NULL dans main, pas ici !
 
-    /* malloc => heap allocation */
+    // malloc => heap allocation
     my_hash_table = (HASH *)malloc(sizeof(HASH));
 
     //refcount++;
-
-#ifdef DEBUG
-    fprintf(stderr, "Incrémentation de refcount. Nouvelle valeur =  %d \n", refcount );
-#endif
+    print_refcount();
     if(my_hash_table == NULL)
         exit(EXIT_FAILURE);
 
-    /* On initialise le pointeur next du premier element a NULL */
+    // On initialise le pointeur next du premier element a NULL
     my_hash_table->next = NULL;
 
-    /* On retourne le pointeur vers le premier element */
+    // par défaut, le premier élément créé est aussi le dernier
+    my_hash_table->b_isLast = true;
+
+    // On retourne le pointeur vers le premier element
     return my_hash_table;
 }
 
 
 void eraseTable (HASH * p_hash_table)
 {
-#ifdef DEBUG
-    fprintf(stderr, "Fonction en cours d'exécution : %s \n", __func__ );
-#endif
     HASH * my_hash_table_next;
 
     my_hash_table_next = p_hash_table->next;
@@ -67,43 +69,49 @@ void eraseTable (HASH * p_hash_table)
     {
       free(p_hash_table);
       refcount--;
-#ifdef DEBUG
-      fprintf(stderr, "Décrémentation de refcount. Nouvelle valeur =  %d \n", refcount );
-#endif
     }
 
     // On rappelle la fonction avec pour argument le pointeur vers l'element suivant
-
     if(my_hash_table_next != NULL)
         eraseTable (my_hash_table_next);
+
+    print_refcount();
 }
 
 
 void push (HASH * p_hash_table, char key[20], int value)
 {
-#ifdef DEBUG
-    fprintf(stderr, "Fonction en cours d'exécution : %s \n", __func__ );
-#endif
     unsigned int i;
 
-    /*
-        Tant que l'on est pas arrive au bout de la table de hashage
-        et que la cle entree est differente de la cle des elements
-        de la table de hashage, on passe a l'element suivant
-    */
-
-
-    while((p_hash_table->next != NULL) && (strcmp (p_hash_table->key , key) != 0))
+    // on parcourt la pile, jusqu'au dernier élément
+    while((p_hash_table->next != NULL))
     {
+        // si on ajoute un élément, celui-ci n'est pas le dernier
+        p_hash_table->b_isLast = false;
+
+        // le suivant n'est pas null
         p_hash_table = p_hash_table->next;
+
+        // cet élément est le dernier
+        p_hash_table->b_isLast = true;
     }
 
     /* attention piège : strcmp compare 2 chaines de caractères et renvoie 0 ssi les 2 chaines sont identiques */
 
     if( strcmp (p_hash_table->key, key) == 0 )
+    {
+        // la clé existe (mais on ne sait pas où on est dans la pile)
+        // on écrase la valeur qui existe.
+        // Pas d'augmentation de refcount
+        // car le nombre d'éléments de la pile n'augmente pas
         p_hash_table->value = value;
+    }
     else
     {
+        // On n'a pas trouvé d'élément ayant la même clé
+        // on ajoute un élément dans la pile
+        // => refcount++ dans ce cas
+
         p_hash_table->next = (HASH *)malloc(sizeof(HASH));
 
         if(p_hash_table->next == NULL)
@@ -126,11 +134,6 @@ void push (HASH * p_hash_table, char key[20], int value)
 
 int getHashValue (HASH * p_hash_table, char key[20])
 {
-
-#ifdef DEBUG
-    fprintf(stderr, "Fonction en cours d'exécution : %s \n", __func__ );
-#endif
-
     while(strcmp( p_hash_table->key , key) != 0)
     {
         p_hash_table = p_hash_table->next;
@@ -158,9 +161,6 @@ bool b_IsHashKey (HASH * p_hash_table, char key[20])
 
 void pop (HASH * p_hash_table, char key[20] )
 {
-#ifdef DEBUG
-    fprintf(stderr, "Fonction en cours d'exécution : %s \n", __func__ );
-#endif
     HASH *hash_to_delete;
 
     while (strcmp (p_hash_table->next->key, key ) != 0)
