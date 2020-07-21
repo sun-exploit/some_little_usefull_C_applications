@@ -10,13 +10,13 @@
 #include "hashage.h"
 
 /*
-    HASH          :    LIFO type
-    initHash      :    init
-    setHashValue  :    push
-    getHashValue  :    get
-    deleteHashKey :    deleteKey
-    pop           :    remove one element from the top
-    destroyHash   :    delete
+    HASH          :    linked list
+    initHash      :    init the hash table
+    push  :    push one pair key/value
+    getHashValue  :    get a value associtated to a given key
+    deleteHashKey :    delete one given Key (and the associated value)
+    pop           :    remove one element from the hash table
+    eraseTable   :     empty the hashTable + free it, and init a new one (cleanest way)
 */
 
 // ask yourself why C++ wins ... 

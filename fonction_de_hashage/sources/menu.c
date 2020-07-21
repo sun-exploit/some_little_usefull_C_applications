@@ -6,8 +6,28 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include "menu.h"
+#include "saisie.h"
+#include "utils.h"
 
-// FIXME : awfull implementation. test inside switch is bad design :-/
+
+// global, for visibility reason  FIXME : hide me !
+extern HASH * my_hash_table;// = NULL;
+
+static char key[20];
+static short int val = 0;
+
+static void saisie_cle(void)
+{
+    saisie_chaine_de_caracteres();
+    strlcpy(key, g_buf, sizeof(g_buf)); /* destination, source, taille chaine */
+}
+
+
+static void saisie_valeur(void)
+{
+    val = saisie_nombre_entier_court(SHRT_MIN, SHRT_MAX);
+    push(my_hash_table, key, val);
+}
 
 
 void menu(bool b_Quit)
@@ -15,41 +35,23 @@ void menu(bool b_Quit)
 #ifdef DEBUG
     fprintf(stderr, "Fonction en cours d'exécution : %s \n", __func__ );
 #endif
-    char choice = 'a';
-    char key[20];
-    int val;
-    extern HASH * my_hash_table;// = NULL;
+    //char choice = 'a';
+    short int choice = 0;
 
     while (false == b_Quit)
     {
         display();
-
-        // TODO : use saisie_nombre_entier_court()
-        scanf ("%c", &choice);
-
-        while (getchar() != '\n');
+        choice = saisie_nombre_entier_court(MENU_ENTRY_1, MENU_ENTRY_8);
 
         switch (choice)
         {
             case HASH_AFFECT_VALUE_FOR_GIVEN_KEY:
             {
-                fprintf(stdout, "Entrez la clé de l'élément à modifier/crée\n");
+                fprintf(stdout, "Entrez la clé de l'élément à modifier/crée (maxi 18 caractères)\n");
+                saisie_cle();
 
-                // TODO : utiliser saisie_chaine_de_caracteres
-                scanf("%s",key);
-
-                while (getchar() != '\n');
-#ifdef DEBUG
-                fprintf(stderr, "key vaut : %s \n", key );
-#endif
-                fprintf(stdout, "Entrez la valeur de l'élément\n");
-
-
-                // TODO : utiliser saisie_nombre_reel()
-                scanf("%d",&val);
-                while (getchar() != '\n');
-
-                push( my_hash_table, key, val);
+                fprintf(stdout, "Entrer un nombre compris entre %hd et %hd, associé à la clé : \n", SHRT_MIN, SHRT_MAX);
+                saisie_valeur();
 
                 break;
             }
@@ -57,10 +59,7 @@ void menu(bool b_Quit)
             case HASH_RETURN_VALUE_FOR_GIVEN_KEY:
             {
                 fprintf(stdout, "Entrez la clé de l'élément\n");
-
-                // TODO : utiliser saisie_chaine_de_caracteres
-                scanf("%s",key);
-                while (getchar() != '\n');
+                saisie_cle();
 
                 if( true == b_IsHashKey(my_hash_table,key))
                     fprintf(stdout, "La valeur de l'élément est %d",getHashValue(my_hash_table,key));
@@ -73,18 +72,14 @@ void menu(bool b_Quit)
             case HASH_SEARCH_A_KEY:
             {
                 fprintf(stdout, "Entrez la clé de l'élément\n");
+                saisie_cle();
 
-                // TODO : utiliser saisie_chaine_de_caracteres
-                scanf("%s",key);
-#ifdef DEBUG
-                fprintf(stderr, "key vaut : %s \n", key );
-#endif
-                while (getchar() != '\n');
+                fprintf(stderr, "clé testée : %s \n", key );
 
-                if (b_IsHashKey(my_hash_table,key) == 1)
-                    fprintf(stdout, "L'élément existe\n");
+                if (b_IsHashKey(my_hash_table,key) == true)
+                    fprintf(stdout, "Cette clé existe dans la table\n");
                 else
-                    fprintf(stdout, "L'élément n'existe pas\n");
+                    fprintf(stdout, "Cette clé n'existe pas\n");
 
             break;
             }
@@ -92,19 +87,12 @@ void menu(bool b_Quit)
             case HASH_DELETE_ENTRY_FROM_GIVEN_KEY:
             {
                 fprintf(stdout, "Entrez la clé de l'élément\n");
+                saisie_cle();
 
-                // TODO : utiliser saisie_chaine_de_caracteres
-                scanf("%s",key);
-                while (getchar() != '\n');
-
-#ifdef DEBUG
-                fprintf(stderr, "key vaut : %s \n", key );
-#endif
                 if (false == b_IsHashKey(my_hash_table,key))
-                    fprintf(stdout, "L'élément n'existe pas!\n");
+                    fprintf(stdout, "Cette clé n'existe pas dans la table !\n");
                 else
                     deleteKey(my_hash_table,key);
-
             }
             break;
 
@@ -117,11 +105,9 @@ void menu(bool b_Quit)
 
             case HASH_TABLE_QUIT:
             {
-#ifdef DEBUG
-                fprintf(stderr, "Sortie du programme. key vaut : %s \n", key );
-#endif
                 b_Quit = true;
 
+                // cleanup
                 if(my_hash_table != NULL)
                     eraseTable();
             }
