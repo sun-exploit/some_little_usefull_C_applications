@@ -41,6 +41,9 @@ HASH * initHash (void)
     // ATTENTION : le pointeur est initialisé a NULL dans main, pas ici !
 
     // malloc => heap allocation
+    if (my_hash_table != NULL)
+        free(my_hash_table);
+
     my_hash_table = (HASH *)malloc(sizeof(HASH));
 
     //refcount++;
@@ -58,7 +61,6 @@ HASH * initHash (void)
     return my_hash_table;
 }
 
-
 void eraseTable()
 {
     HASH * last = my_hash_table;
@@ -68,6 +70,7 @@ void eraseTable()
         last = last->next;
         pop(last);
     }
+    initHash();
 }
 
 
