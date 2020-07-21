@@ -1,4 +1,5 @@
 Quelques applications en C très utiles, telles que :
+- [ ] fonction_table_de_hashage : exemple d'implémentation naïve d'une table de hashage
 - [ ] saisie : API d'entrées sorties ultra simple, mais robuste (merci de faire remonter les problèmes)
 - [ ] Exemples de projets : quelques exemples de projets réalisés par des élèves (langage : C)
 - [ ] utime : gestion du temps utilisant CLOCK_REALTIME, gettimeofday() et timespec
