@@ -8,7 +8,7 @@ Tout est contenu dans l'archive fonction_de_hashage_2020_07_21.tar.gz
 Pour l'utiliser
 
 
-##Téléchargement de l'archive
+## Téléchargement de l'archive
 
 Pour télécharger tout ce qui concerne le C : 
 
@@ -19,7 +19,7 @@ Si vous ne souhaitez télécharger QUE la tablede hashage, il suffit de ne tél�
 Avec votre navigateur, télécharger cette archive dans un répertoire donné, dont vous connaissez le chemin.
 
 
-##Décompression
+## Décompression
 
 Ouvrir un terminal, et se placer dans le répertoire :
 
@@ -32,7 +32,7 @@ La commande à entrer dans le termminal est :
 tar zxvf fonction_de_hashage_2020_07_21.tar.gz
 ````
 
-##Création des binaires exécutables 
+## Création des binaires exécutables 
 
 Toujours dans le même terminal, taper :
 
@@ -42,21 +42,21 @@ make
 ````
 
 
-##Tester
+## Tester
 
 ````
 cd build
 ./hash_table
 ````
 
-##Comment aider ?
+## Comment aider ?
 
-Merci de remonter les bugs, et les suggestions d'améliorations
+**Merci de remonter les bugs, et les suggestions d'améliorations !!**
 
 Si vous avez besoin d'une licence plus permissive, il est prévu de mettre tout le code sous licence MIT d'ici quelques temps.
 
 
-Eric Bachard
+**Eric Bachard**
 Le 21 juillet 2020
 
 
