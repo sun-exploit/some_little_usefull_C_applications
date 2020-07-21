@@ -53,8 +53,8 @@ void menu(bool b_Quit)
                 fprintf(stdout, "Entrer un nombre compris entre %hd et %hd, associé à la clé : \n", SHRT_MIN, SHRT_MAX);
                 saisie_valeur();
 
-                break;
             }
+            break;
 
             case HASH_RETURN_VALUE_FOR_GIVEN_KEY:
             {
@@ -66,8 +66,8 @@ void menu(bool b_Quit)
                 else
                     fprintf(stdout, "Aucun élément de la table ne contient cette clé\n");
 
-            break;
             }
+            break;
 
             case HASH_SEARCH_A_KEY:
             {
@@ -81,8 +81,8 @@ void menu(bool b_Quit)
                 else
                     fprintf(stdout, "Cette clé n'existe pas\n");
 
-            break;
             }
+            break;
 
             case HASH_DELETE_ENTRY_FROM_GIVEN_KEY:
             {
