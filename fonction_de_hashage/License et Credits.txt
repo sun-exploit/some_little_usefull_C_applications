@@ -1,9 +1,30 @@
-/* Auteur:  Eric Bachard  / 17 novembre 2014
- * Ce document est sous Licence GPL v2
+/* Copyright :  Eric Bachard  / 17 novembre 2014
+ * Exemple d'implémentation d'un exemple de table de hashage élémentaire
+ * Ce document est sous Licence GPL v2 (
  * voir : http://www.gnu.org/licenses/gpl-2.0.html
  */
 
-Programme créé en 2006 (d'après TD LO22)
+Programme créé en 2006 (d'après TD LO22, UTBM)
+
+TODO :
+- créer une documentation complète
+- créer des tests unitaires, car il est très facile d'introduire une régression
+
+Clés : chaines de caractères (longueur 18 caractères maximum, mais on peut aller jusqu'à 512 caractères)
+Valeurs: seul le type entier court signé est implémenté ici
+Ce n'est pas une pile : si on insère une nouvelle paire clé/valeur, celle-ci est inséré en fin de liste.
+Mais si on la supprime , et qu'on la récrée après avoir insérée d'autres paires entre temps, l'ordre ne sera pas conservé
+
+Dernières modifications : Eric Bachard 21 juillet 2020
+
+- important code cleanup + code mieux documenté
+- refactorisation du code
+- nombreuses corrections de bugs
+- utilisation de l'API saisie
+- modification des menus (+constantes associées)
+- on peut insérer des clés de tous types (seul le type entier court signé est implémenté ici)
+- ajout d'options plus complexes pour supprimer les warnings lors de la compilation
+
 
 Dernieres modifications : Eric Bachard 17 nov 2014 
 - creation Makefile
@@ -11,11 +32,4 @@ Dernieres modifications : Eric Bachard 17 nov 2014
 - ajout de constantes pour les entrées de menu
 - ajout switch pour le menu
 - ajout .h
-- ...
 
-TODO :
-- vérifier que le programme fonctionne comme attendu (inversion clé / valeur ?)
-- tester avec des chaînes de caractère plus longues
-- fonctionement en pile LIFO ? (à vérifier)
-- ... à continuer
-- ajouter le travail à faire avec le débogueur (gdb)
