@@ -9,18 +9,16 @@
 
 #include "hashage.h"
 
-// TODO : improve this awfull menu
+#define MENU_ENTRY_1       1
+#define MENU_ENTRY_2       2
+#define MENU_ENTRY_3       3
+#define MENU_ENTRY_4       4
+#define MENU_ENTRY_5       5
+#define MENU_ENTRY_6       6
+#define MENU_ENTRY_7       7
+#define MENU_ENTRY_8       8
+#define MENU_ENTRY_9       9
 
-/* Directly using ascii value for the entered numbers. This way, menu entries won't depend on the content */
-#define MENU_ENTRY_1                         49
-#define MENU_ENTRY_2                         50
-#define MENU_ENTRY_3                         51
-#define MENU_ENTRY_4                         52
-#define MENU_ENTRY_5                         53
-#define MENU_ENTRY_6                         54
-#define MENU_ENTRY_7                         55
-#define MENU_ENTRY_8                         56
-#define MENU_ENTRY_9                         57
 
 /* what is currently proposed (some other choices could be proposed in the future) */
 
