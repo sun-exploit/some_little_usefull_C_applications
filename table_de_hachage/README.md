@@ -13,7 +13,7 @@ Pour télécharger tout ce qui concerne le C :
 
 git clone https://framagit.org/ericb/some_little_usefull_C_applications
 
-Si vous ne souhaitez télécharger QUE la table de hashage, il suffit de ne télécharger que l'archive [table_de_hachage_2020_07_21.tar.gz](https://framagit.org/ericb/some_little_usefull_C_applications/-/blob/master/table_de_hachage/table_de_hachage_2020_07_21.tar.gz)
+Si vous ne souhaitez télécharger QUE la table de hashage, il suffit de ne télécharger que l'archive [table_de_hachage_ericb.tar.gz](https://framagit.org/ericb/some_little_usefull_C_applications/-/blob/master/table_de_hachage/table_de_hachage_ericb.tar.gz)
 
 Avec votre navigateur, télécharger cette archive dans un répertoire donné, dont vous connaissez le chemin.
 
