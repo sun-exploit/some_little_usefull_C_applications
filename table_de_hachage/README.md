@@ -60,4 +60,4 @@ Le 21 juillet 2020
 
 
 Remarque :
-L'archive table_de_hachage_2020_07_21.tar.gz n'a été testée fonctionnelle que sous Linux, mais elle devrait pouvoir être très facilement adaptée à Mac OS X.
+L'archive table_de_hachage_ericb.tar.gz n'a été testée fonctionnelle que sous Linux, mais elle devrait pouvoir être très facilement adaptée à Mac OS X.
