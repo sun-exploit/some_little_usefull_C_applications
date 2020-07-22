@@ -2,7 +2,7 @@
 
 **hash_table est une application console, qui est prévue pour fonctionner dans un terminal sous Linux seulement** (pour l'instant).
 
-Tout est contenu dans l'archive table_de_hachage_2020_07_21.tar.gz
+Tout est contenu dans l'archive table_de_hachage_ericb.tar.gz
 
 Pour l'utiliser
 
@@ -28,7 +28,7 @@ Ouvrir un terminal, et se placer dans le répertoire :
 
 La commande à entrer dans le termminal est :
 ````
-tar zxvf table_de_hachage_2020_07_21.tar.gz
+tar zxvf table_de_hachage_ericb.tar.gz
 ````
 
 ## Création des binaires exécutables 
